@@ -12,4 +12,6 @@ public interface ClaseRepository extends JpaRepository<Clase, Integer> {
     List<Clase> findByDeporte_IdDeporte(Integer idDeporte);
 
     List<Clase> findByEstado(EstadoClase estado);
+
+    List<Clase> findBySala_IdSala(Integer idSala);
 }
