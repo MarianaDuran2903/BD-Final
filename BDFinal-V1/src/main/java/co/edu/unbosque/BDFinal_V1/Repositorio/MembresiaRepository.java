@@ -1,13 +1,16 @@
 package co.edu.unbosque.BDFinal_V1.Repositorio;
 
-public interface MembresiaRepository extends JpaRepository<Membresia, Integer> {
+import co.edu.unbosque.BDFinal_V1.Modelo.Membresia;
+import co.edu.unbosque.BDFinal_V1.Modelo.MembresiaId;
+import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoMembresia;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-    // Req. 13: membresías por estado
-    List<Membresia> findByEstado(String estado);
+public interface MembresiaRepository extends JpaRepository<Membresia, MembresiaId> {
 
-    // Membresías de un miembro
-    List<Membresia> findByMiembroCedula(String cedula);
+    List<Membresia> findByEstado(EstadoMembresia estado);
 
-    // Membresía activa de un miembro
-    List<Membresia> findByMiembroCedulaAndEstado(String cedula, String estado);
+    List<Membresia> findByMiembro_Cedula(String cedula);
+
+    List<Membresia> findByMiembro_CedulaAndEstado(String cedula, EstadoMembresia estado);
 }

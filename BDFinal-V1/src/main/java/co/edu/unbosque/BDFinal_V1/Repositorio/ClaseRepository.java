@@ -1,13 +1,15 @@
 package co.edu.unbosque.BDFinal_V1.Repositorio;
 
+import co.edu.unbosque.BDFinal_V1.Modelo.Clase;
+import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
 public interface ClaseRepository extends JpaRepository<Clase, Integer> {
 
-    // Consultar clases por entrenador (Req. 14)
-    List<Clase> findByEntrenadorCedula(String cedula);
+    List<Clase> findByEntrenador_Cedula(String cedula);
 
-    // Consultar clases por deporte
-    List<Clase> findByDeporteIdDeporte(Integer idDeporte);
+    List<Clase> findByDeporte_IdDeporte(Integer idDeporte);
 
-    // Consultar clases por estado
-    List<Clase> findByEstado(String estado);
+    List<Clase> findByEstado(EstadoClase estado);
 }
