@@ -1,21 +1,22 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Plan;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.PlanRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.PlanResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.DuracionPlan;
 import java.util.List;
 import java.util.Optional;
 
 public interface PlanService {
 
-    List<Plan> listarTodos();
+    List<PlanResponseDTO> listarTodos();
 
-    Optional<Plan> buscarPorId(Integer id);
+    Optional<PlanResponseDTO> buscarPorId(Integer id);
 
-    Plan guardar(Plan plan);
+    PlanResponseDTO guardar(PlanRequestDTO dto);
 
-    Plan actualizar(Integer id, Plan plan);
+    PlanResponseDTO actualizar(Integer id, PlanRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Plan> buscarPorDuracion(DuracionPlan duracion);
+    List<PlanResponseDTO> buscarPorDuracion(DuracionPlan duracion);
 }

@@ -1,20 +1,21 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Sala;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.SalaRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.SalaResponseDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface SalaService {
 
-    List<Sala> listarTodas();
+    List<SalaResponseDTO> listarTodas();
 
-    Optional<Sala> buscarPorId(Integer id);
+    Optional<SalaResponseDTO> buscarPorId(Integer id);
 
-    Sala guardar(Sala sala);
+    SalaResponseDTO guardar(SalaRequestDTO dto);
 
-    Sala actualizar(Integer id, Sala sala);
+    SalaResponseDTO actualizar(Integer id, SalaRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Sala> buscarPorCapacidadMinima(Short capacidad);
+    List<SalaResponseDTO> buscarPorCapacidadMinima(Short capacidad);
 }

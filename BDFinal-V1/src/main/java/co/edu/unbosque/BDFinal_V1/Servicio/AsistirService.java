@@ -1,18 +1,18 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Asistir;
-import co.edu.unbosque.BDFinal_V1.Modelo.AsistirId;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.AsistirRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.AsistirResponseDTO;
 import java.util.List;
 
 public interface AsistirService {
 
-    Asistir registrarAsistencia(AsistirId id);
+    AsistirResponseDTO registrarAsistencia(AsistirRequestDTO dto);
 
-    void cancelarAsistencia(AsistirId id);
+    void cancelarAsistencia(AsistirRequestDTO dto);
 
-    List<Asistir> consultarPorMiembro(String cedula);
+    List<AsistirResponseDTO> consultarPorMiembro(String cedula);
 
-    List<Asistir> consultarPorClase(Integer idClase);
+    List<AsistirResponseDTO> consultarPorClase(Integer idClase);
 
     boolean yaEstaInscrito(String cedulaMiembro, Integer idClase);
 

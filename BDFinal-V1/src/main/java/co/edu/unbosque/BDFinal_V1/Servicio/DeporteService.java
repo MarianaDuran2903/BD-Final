@@ -1,20 +1,21 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Deporte;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.DeporteRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.DeporteResponseDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface DeporteService {
 
-    List<Deporte> listarTodos();
+    List<DeporteResponseDTO> listarTodos();
 
-    Optional<Deporte> buscarPorId(Integer id);
+    Optional<DeporteResponseDTO> buscarPorId(Integer id);
 
-    Deporte guardar(Deporte deporte);
+    DeporteResponseDTO guardar(DeporteRequestDTO dto);
 
-    Deporte actualizar(Integer id, Deporte deporte);
+    DeporteResponseDTO actualizar(Integer id, DeporteRequestDTO dto);
 
     void eliminar(Integer id);
 
-    Optional<Deporte> buscarPorNombre(String nombre);
+    Optional<DeporteResponseDTO> buscarPorNombre(String nombre);
 }

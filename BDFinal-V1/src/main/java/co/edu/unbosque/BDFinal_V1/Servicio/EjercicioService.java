@@ -1,20 +1,21 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Ejercicio;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.EjercicioRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.EjercicioResponseDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface EjercicioService {
 
-    List<Ejercicio> listarTodos();
+    List<EjercicioResponseDTO> listarTodos();
 
-    Optional<Ejercicio> buscarPorId(Integer id);
+    Optional<EjercicioResponseDTO> buscarPorId(Integer id);
 
-    Ejercicio guardar(Ejercicio ejercicio);
+    EjercicioResponseDTO guardar(EjercicioRequestDTO dto);
 
-    Ejercicio actualizar(Integer id, Ejercicio ejercicio);
+    EjercicioResponseDTO actualizar(Integer id, EjercicioRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Ejercicio> buscarPorPlanDeMiembro(String cedula);
+    List<EjercicioResponseDTO> buscarPorPlanDeMiembro(String cedula);
 }

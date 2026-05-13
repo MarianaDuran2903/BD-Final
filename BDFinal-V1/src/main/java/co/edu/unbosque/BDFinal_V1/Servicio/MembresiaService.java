@@ -1,28 +1,29 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Membresia;
 import co.edu.unbosque.BDFinal_V1.Modelo.MembresiaId;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.MembresiaRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.MembresiaResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoMembresia;
 import java.util.List;
 import java.util.Optional;
 
 public interface MembresiaService {
 
-    List<Membresia> listarTodas();
+    List<MembresiaResponseDTO> listarTodas();
 
-    Optional<Membresia> buscarPorId(MembresiaId id);
+    Optional<MembresiaResponseDTO> buscarPorId(MembresiaId id);
 
-    Membresia guardar(Membresia membresia);
+    MembresiaResponseDTO guardar(MembresiaRequestDTO dto);
 
-    Membresia actualizar(MembresiaId id, Membresia membresia);
+    MembresiaResponseDTO actualizar(MembresiaId id, MembresiaRequestDTO dto);
 
     void eliminar(MembresiaId id);
 
-    List<Membresia> buscarPorMiembro(String cedula);
+    List<MembresiaResponseDTO> buscarPorMiembro(String cedula);
 
-    List<Membresia> buscarPorEstado(EstadoMembresia estado);
+    List<MembresiaResponseDTO> buscarPorEstado(EstadoMembresia estado);
 
-    List<Membresia> buscarActivasPorMiembro(String cedula);
+    List<MembresiaResponseDTO> buscarActivasPorMiembro(String cedula);
 
-    Optional<Membresia> buscarMembresiaVigente(String cedula);
+    Optional<MembresiaResponseDTO> buscarMembresiaVigente(String cedula);
 }

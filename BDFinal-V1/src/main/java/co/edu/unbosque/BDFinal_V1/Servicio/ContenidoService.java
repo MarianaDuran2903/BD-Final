@@ -1,23 +1,24 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Contenido;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.ContenidoRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.ContenidoResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoContenido;
 import java.util.List;
 import java.util.Optional;
 
 public interface ContenidoService {
 
-    List<Contenido> listarTodos();
+    List<ContenidoResponseDTO> listarTodos();
 
-    Optional<Contenido> buscarPorId(Integer id);
+    Optional<ContenidoResponseDTO> buscarPorId(Integer id);
 
-    Contenido guardar(Contenido contenido);
+    ContenidoResponseDTO guardar(ContenidoRequestDTO dto);
 
-    Contenido actualizar(Integer id, Contenido contenido);
+    ContenidoResponseDTO actualizar(Integer id, ContenidoRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Contenido> buscarPorDeporte(Integer idDeporte);
+    List<ContenidoResponseDTO> buscarPorDeporte(Integer idDeporte);
 
-    List<Contenido> buscarPorTipo(TipoContenido tipo);
+    List<ContenidoResponseDTO> buscarPorTipo(TipoContenido tipo);
 }

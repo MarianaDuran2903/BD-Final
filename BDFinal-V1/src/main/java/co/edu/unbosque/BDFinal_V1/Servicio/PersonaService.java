@@ -1,25 +1,26 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Persona;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.PersonaRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.PersonaResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.Rol;
 import java.util.List;
 import java.util.Optional;
 
 public interface PersonaService {
 
-    List<Persona> listarTodos();
+    List<PersonaResponseDTO> listarTodos();
 
-    Optional<Persona> buscarPorCedula(String cedula);
+    Optional<PersonaResponseDTO> buscarPorCedula(String cedula);
 
-    Optional<Persona> buscarPorCorreo(String correo);
+    Optional<PersonaResponseDTO> buscarPorCorreo(String correo);
 
-    Persona guardar(Persona persona);
+    PersonaResponseDTO guardar(PersonaRequestDTO dto);
 
-    Persona actualizar(String cedula, Persona persona);
+    PersonaResponseDTO actualizar(String cedula, PersonaRequestDTO dto);
 
     void eliminar(String cedula);
 
-    List<Persona> buscarPorRol(Rol rol);
+    List<PersonaResponseDTO> buscarPorRol(Rol rol);
 
     boolean existeCorreo(String correo);
 }

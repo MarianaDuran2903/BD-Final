@@ -1,6 +1,7 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Maquinas;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.MaquinasRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.MaquinasResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoMaquina;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoMaquina;
 import java.util.List;
@@ -8,19 +9,19 @@ import java.util.Optional;
 
 public interface MaquinasService {
 
-    List<Maquinas> listarTodas();
+    List<MaquinasResponseDTO> listarTodas();
 
-    Optional<Maquinas> buscarPorId(Integer id);
+    Optional<MaquinasResponseDTO> buscarPorId(Integer id);
 
-    Maquinas guardar(Maquinas maquina);
+    MaquinasResponseDTO guardar(MaquinasRequestDTO dto);
 
-    Maquinas actualizar(Integer id, Maquinas maquina);
+    MaquinasResponseDTO actualizar(Integer id, MaquinasRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Maquinas> buscarPorTipo(TipoMaquina tipo);
+    List<MaquinasResponseDTO> buscarPorTipo(TipoMaquina tipo);
 
-    List<Maquinas> buscarPorEstado(EstadoMaquina estado);
+    List<MaquinasResponseDTO> buscarPorEstado(EstadoMaquina estado);
 
-    Maquinas cambiarEstado(Integer id, EstadoMaquina nuevoEstado);
+    MaquinasResponseDTO cambiarEstado(Integer id, EstadoMaquina nuevoEstado);
 }

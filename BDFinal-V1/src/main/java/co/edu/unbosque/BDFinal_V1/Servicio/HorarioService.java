@@ -1,6 +1,7 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Horario;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.DisponibilidadHorario;
 import java.time.LocalDate;
 import java.util.List;
@@ -8,21 +9,21 @@ import java.util.Optional;
 
 public interface HorarioService {
 
-    List<Horario> listarTodos();
+    List<HorarioResponseDTO> listarTodos();
 
-    Optional<Horario> buscarPorId(Integer id);
+    Optional<HorarioResponseDTO> buscarPorId(Integer id);
 
-    Horario guardar(Horario horario);
+    HorarioResponseDTO guardar(HorarioRequestDTO dto);
 
-    Horario actualizar(Integer id, Horario horario);
+    HorarioResponseDTO actualizar(Integer id, HorarioRequestDTO dto);
 
     void eliminar(Integer id);
 
-    List<Horario> buscarPorFecha(LocalDate fecha);
+    List<HorarioResponseDTO> buscarPorFecha(LocalDate fecha);
 
-    List<Horario> buscarDisponibles();
+    List<HorarioResponseDTO> buscarDisponibles();
 
-    List<Horario> buscarPorRangoFechas(LocalDate inicio, LocalDate fin);
+    List<HorarioResponseDTO> buscarPorRangoFechas(LocalDate inicio, LocalDate fin);
 
-    Horario cambiarDisponibilidad(Integer id, DisponibilidadHorario disponibilidad);
+    HorarioResponseDTO cambiarDisponibilidad(Integer id, DisponibilidadHorario disponibilidad);
 }

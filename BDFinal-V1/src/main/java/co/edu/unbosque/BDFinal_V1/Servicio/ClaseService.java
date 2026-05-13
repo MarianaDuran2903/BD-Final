@@ -1,32 +1,30 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Clase;
-import co.edu.unbosque.BDFinal_V1.Modelo.Entrenador;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.ClaseRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.ClaseResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
 import java.util.List;
 import java.util.Optional;
 
 public interface ClaseService {
 
-    List<Clase> listarTodas();
+    List<ClaseResponseDTO> listarTodas();
 
-    Optional<Clase> buscarPorId(Integer id);
+    Optional<ClaseResponseDTO> buscarPorId(Integer id);
 
-    Clase guardar(Clase clase);
+    ClaseResponseDTO guardar(ClaseRequestDTO dto);
 
-    Clase actualizar(Integer id, Clase clase);
+    ClaseResponseDTO actualizar(Integer id, ClaseRequestDTO dto);
 
     void eliminar(Integer id);
 
-    Clase asignarEntrenador(Integer idClase, String cedulaEntrenador);
+    ClaseResponseDTO asignarEntrenador(Integer idClase, String cedulaEntrenador);
 
-    Optional<Entrenador> consultarEntrenadorDeClase(Integer idClase);
+    List<ClaseResponseDTO> buscarPorEntrenador(String cedula);
 
-    List<Clase> buscarPorEntrenador(String cedula);
+    List<ClaseResponseDTO> buscarPorDeporte(Integer idDeporte);
 
-    List<Clase> buscarPorDeporte(Integer idDeporte);
+    List<ClaseResponseDTO> buscarPorEstado(EstadoClase estado);
 
-    List<Clase> buscarPorEstado(EstadoClase estado);
-
-    List<Clase> buscarPorSala(Integer idSala);
+    List<ClaseResponseDTO> buscarPorSala(Integer idSala);
 }

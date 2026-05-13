@@ -1,6 +1,7 @@
 package co.edu.unbosque.BDFinal_V1.Servicio;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.Operador;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.OperadorRequestDTO;
+import co.edu.unbosque.BDFinal_V1.Modelo.dto.OperadorResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EspecialidadOperador;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoOperador;
 import java.util.List;
@@ -8,17 +9,17 @@ import java.util.Optional;
 
 public interface OperadorService {
 
-    List<Operador> listarTodos();
+    List<OperadorResponseDTO> listarTodos();
 
-    Optional<Operador> buscarPorCedula(String cedula);
+    Optional<OperadorResponseDTO> buscarPorCedula(String cedula);
 
-    Operador guardar(Operador operador);
+    OperadorResponseDTO guardar(OperadorRequestDTO dto);
 
-    Operador actualizar(String cedula, Operador operador);
+    OperadorResponseDTO actualizar(String cedula, OperadorRequestDTO dto);
 
     void eliminar(String cedula);
 
-    List<Operador> buscarPorTipoOperador(TipoOperador tipo);
+    List<OperadorResponseDTO> buscarPorTipoOperador(TipoOperador tipo);
 
-    List<Operador> buscarPorEspecialidad(EspecialidadOperador especialidad);
+    List<OperadorResponseDTO> buscarPorEspecialidad(EspecialidadOperador especialidad);
 }
