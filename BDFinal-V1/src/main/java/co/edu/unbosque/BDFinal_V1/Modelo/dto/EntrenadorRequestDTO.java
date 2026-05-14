@@ -17,7 +17,7 @@ public class EntrenadorRequestDTO {
     @NotBlank @Email @Size(max = 50)
     private String correo;
 
-    @NotBlank @Size(max = 255)
+    @Size(max = 255)
     private String password;
 
     @NotBlank @Size(max = 15)

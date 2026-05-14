@@ -54,8 +54,14 @@ public class EntrenadorServiceImpl implements EntrenadorService {
 
     @Override
     public EntrenadorResponseDTO guardar(EntrenadorRequestDTO dto) {
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new IllegalArgumentException("La contraseña es requerida para crear un entrenador.");
+        }
+        if (personaRepository.existsById(dto.getCedula())) {
+            throw new IllegalArgumentException("Ya existe una persona registrada con la cédula: " + dto.getCedula());
+        }
         if (personaRepository.existsByCorreo(dto.getCorreo())) {
-            throw new IllegalArgumentException("Ya existe una persona con el correo: " + dto.getCorreo());
+            throw new IllegalArgumentException("Ya existe una persona registrada con el correo: " + dto.getCorreo());
         }
         Persona persona = mm.map(dto, Persona.class);
         persona.setRol(Rol.entrenador);
@@ -84,7 +90,9 @@ public class EntrenadorServiceImpl implements EntrenadorService {
                 .orElseThrow(() -> new RuntimeException("Entrenador no encontrado con cédula: " + cedula));
         persona.setTelefono(dto.getTelefono());
         persona.setCorreo(dto.getCorreo());
-        persona.setPassword(dto.getPassword());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            persona.setPassword(dto.getPassword());
+        }
         persona.setPrimerNombre(dto.getPrimerNombre());
         persona.setSegundoNombre(dto.getSegundoNombre());
         persona.setPrimerApellido(dto.getPrimerApellido());
@@ -114,7 +122,8 @@ public class EntrenadorServiceImpl implements EntrenadorService {
         if (!entrenadorRepository.existsById(cedula)) {
             throw new RuntimeException("Entrenador no encontrado con cédula: " + cedula);
         }
-        entrenadorRepository.deleteById(cedula);
+        entrenadorRepository.deleteByCedula(cedula);
+        personaRepository.deleteByCedula(cedula);
     }
 
     @Override

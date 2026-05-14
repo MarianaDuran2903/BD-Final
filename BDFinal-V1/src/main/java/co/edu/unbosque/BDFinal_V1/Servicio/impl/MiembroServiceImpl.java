@@ -48,8 +48,14 @@ public class MiembroServiceImpl implements MiembroService {
 
     @Override
     public MiembroResponseDTO guardar(MiembroRequestDTO dto) {
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new IllegalArgumentException("La contraseña es requerida para crear un miembro.");
+        }
+        if (personaRepository.existsById(dto.getCedula())) {
+            throw new IllegalArgumentException("Ya existe una persona registrada con la cédula: " + dto.getCedula());
+        }
         if (personaRepository.existsByCorreo(dto.getCorreo())) {
-            throw new IllegalArgumentException("Ya existe una persona con el correo: " + dto.getCorreo());
+            throw new IllegalArgumentException("Ya existe una persona registrada con el correo: " + dto.getCorreo());
         }
         Persona persona = mm.map(dto, Persona.class);
         persona.setRol(Rol.miembro);
@@ -69,7 +75,9 @@ public class MiembroServiceImpl implements MiembroService {
                 .orElseThrow(() -> new RuntimeException("Miembro no encontrado con cédula: " + cedula));
         persona.setTelefono(dto.getTelefono());
         persona.setCorreo(dto.getCorreo());
-        persona.setPassword(dto.getPassword());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            persona.setPassword(dto.getPassword());
+        }
         persona.setPrimerNombre(dto.getPrimerNombre());
         persona.setSegundoNombre(dto.getSegundoNombre());
         persona.setPrimerApellido(dto.getPrimerApellido());
@@ -90,7 +98,8 @@ public class MiembroServiceImpl implements MiembroService {
         if (!miembroRepository.existsById(cedula)) {
             throw new RuntimeException("Miembro no encontrado con cédula: " + cedula);
         }
-        miembroRepository.deleteById(cedula);
+        miembroRepository.deleteByCedula(cedula);
+        personaRepository.deleteByCedula(cedula);
     }
 
     @Override

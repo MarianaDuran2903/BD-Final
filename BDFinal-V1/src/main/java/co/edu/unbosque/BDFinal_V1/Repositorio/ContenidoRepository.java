@@ -3,16 +3,32 @@ package co.edu.unbosque.BDFinal_V1.Repositorio;
 import co.edu.unbosque.BDFinal_V1.Modelo.Contenido;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoContenido;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ContenidoRepository extends JpaRepository<Contenido, Integer> {
 
-    List<Contenido> findByDeporte_IdDeporte(Integer idDeporte);
+    @Query(value = "SELECT * FROM CONTENIDO", nativeQuery = true)
+    List<Contenido> findAll();
 
-    List<Contenido> findByTipoContenido(TipoContenido tipoContenido);
+    @Query(value = "SELECT * FROM CONTENIDO WHERE id_contenido = :id", nativeQuery = true)
+    Optional<Contenido> findById(@Param("id") Integer id);
 
-    List<Contenido> findByAutor(String autor);
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Contenido c WHERE c.idContenido = :id")
+    boolean existsById(@Param("id") Integer id);
 
-    List<Contenido> findByFechaPublicacionBetween(LocalDate inicio, LocalDate fin);
+    @Query(value = "SELECT * FROM CONTENIDO WHERE DEPORTE_id_deporte = :idDeporte", nativeQuery = true)
+    List<Contenido> findByDeporte_IdDeporte(@Param("idDeporte") Integer idDeporte);
+
+    @Query(value = "SELECT * FROM CONTENIDO WHERE tipo_contenido = :tipo", nativeQuery = true)
+    List<Contenido> findByTipoContenido(@Param("tipo") TipoContenido tipo);
+
+    @Query(value = "SELECT * FROM CONTENIDO WHERE autor = :autor", nativeQuery = true)
+    List<Contenido> findByAutor(@Param("autor") String autor);
+
+    @Query(value = "SELECT * FROM CONTENIDO WHERE fecha_publicacion BETWEEN :inicio AND :fin", nativeQuery = true)
+    List<Contenido> findByFechaPublicacionBetween(@Param("inicio") LocalDate inicio, @Param("fin") LocalDate fin);
 }

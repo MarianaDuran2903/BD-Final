@@ -86,7 +86,7 @@ public class PagoServiceImpl implements PagoService {
     @Override
     @Transactional(readOnly = true)
     public List<PagoResponseDTO> buscarPorMetodoPago(MetodoPago metodo) {
-        return pagoRepository.findByMetodoPago(metodo).stream()
+        return pagoRepository.findByMetodoPago(metodo.name()).stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }

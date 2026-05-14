@@ -1,6 +1,7 @@
 package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.NivelExperiencia;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,30 +17,37 @@ public class MiembroRequestDTO {
     @NotBlank @Email @Size(max = 50)
     private String correo;
 
-    @NotBlank @Size(max = 255)
+    @Size(max = 255)
     private String password;
 
+    @JsonProperty("primer_nombre")
     @NotBlank @Size(max = 15)
     private String primerNombre;
 
+    @JsonProperty("segundo_nombre")
     @Size(max = 15)
     private String segundoNombre;
 
+    @JsonProperty("primer_apellido")
     @NotBlank @Size(max = 15)
     private String primerApellido;
 
+    @JsonProperty("segundo_apellido")
     @NotBlank @Size(max = 15)
     private String segundoApellido;
 
+    @JsonProperty("fecha_nacimiento")
     @NotNull
     private LocalDate fechaNacimiento;
 
     @NotNull @Positive
     private Short altura;
 
+    @JsonProperty("peso_actual")
     @NotNull @DecimalMin("0.01") @Digits(integer = 3, fraction = 2)
     private BigDecimal pesoActual;
 
+    @JsonProperty("nivel_experiencia")
     @NotNull
     private NivelExperiencia nivelExperiencia;
 

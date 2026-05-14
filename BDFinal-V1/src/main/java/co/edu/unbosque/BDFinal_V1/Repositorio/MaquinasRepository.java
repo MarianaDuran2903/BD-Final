@@ -4,13 +4,28 @@ import co.edu.unbosque.BDFinal_V1.Modelo.Maquinas;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoMaquina;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoMaquina;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Optional;
 
 public interface MaquinasRepository extends JpaRepository<Maquinas, Integer> {
 
-    List<Maquinas> findByTipoMaquina(TipoMaquina tipoMaquina);
+    @Query(value = "SELECT * FROM MAQUINAS", nativeQuery = true)
+    List<Maquinas> findAll();
 
-    List<Maquinas> findByEstado(EstadoMaquina estado);
+    @Query(value = "SELECT * FROM MAQUINAS WHERE codigo_serie = :id", nativeQuery = true)
+    Optional<Maquinas> findById(@Param("id") Integer id);
 
-    List<Maquinas> findByMarca(String marca);
+    @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Maquinas m WHERE m.codigoSerie = :id")
+    boolean existsById(@Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM MAQUINAS WHERE tipo_maquina = :tipo", nativeQuery = true)
+    List<Maquinas> findByTipoMaquina(@Param("tipo") TipoMaquina tipo);
+
+    @Query(value = "SELECT * FROM MAQUINAS WHERE estado = :estado", nativeQuery = true)
+    List<Maquinas> findByEstado(@Param("estado") EstadoMaquina estado);
+
+    @Query(value = "SELECT * FROM MAQUINAS WHERE marca = :marca", nativeQuery = true)
+    List<Maquinas> findByMarca(@Param("marca") String marca);
 }
