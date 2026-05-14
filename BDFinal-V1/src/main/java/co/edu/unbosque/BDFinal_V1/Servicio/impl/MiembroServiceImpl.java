@@ -42,7 +42,8 @@ public class MiembroServiceImpl implements MiembroService {
     @Override
     @Transactional(readOnly = true)
     public Optional<MiembroResponseDTO> buscarPorCedula(String cedula) {
-        return miembroRepository.findById(cedula).map(this::toResponseDTO);
+        return miembroRepository.findById(cedula)
+                .map(this::toResponseDTO);
     }
 
     @Override
@@ -55,7 +56,6 @@ public class MiembroServiceImpl implements MiembroService {
         Persona savedPersona = personaRepository.save(persona);
 
         Miembro miembro = new Miembro();
-        miembro.setCedula(savedPersona.getCedula());
         miembro.setPersona(savedPersona);
         miembro.setAltura(dto.getAltura());
         miembro.setPesoActual(dto.getPesoActual());

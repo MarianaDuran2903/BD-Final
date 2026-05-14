@@ -62,7 +62,6 @@ public class EntrenadorServiceImpl implements EntrenadorService {
         Persona savedPersona = personaRepository.save(persona);
 
         Entrenador entrenador = new Entrenador();
-        entrenador.setCedula(savedPersona.getCedula());
         entrenador.setPersona(savedPersona);
         entrenador.setTipoEntrenamiento(dto.getTipoEntrenamiento());
         entrenador.setTiempoExperiencia(dto.getTiempoExperiencia());

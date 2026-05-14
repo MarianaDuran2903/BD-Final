@@ -55,7 +55,6 @@ public class OperadorServiceImpl implements OperadorService {
         Persona savedPersona = personaRepository.save(persona);
 
         Operador operador = new Operador();
-        operador.setCedula(savedPersona.getCedula());
         operador.setPersona(savedPersona);
         operador.setNivelTecnico(dto.getNivelTecnico());
         operador.setEspecialidad(dto.getEspecialidad());
