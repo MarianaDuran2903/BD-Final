@@ -4,6 +4,7 @@ import co.edu.unbosque.BDFinal_V1.Modelo.Mantenimiento;
 import co.edu.unbosque.BDFinal_V1.Modelo.MantenimientoId;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoMantenimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
@@ -32,4 +33,8 @@ public interface MantenimientoRepository extends JpaRepository<Mantenimiento, Ma
 
     @Query(value = "SELECT * FROM Mantenimiento WHERE tipo_mant = :tipo", nativeQuery = true)
     List<Mantenimiento> findByTipoMant(@Param("tipo") TipoMantenimiento tipo);
+
+    @Modifying
+    @Query(value = "DELETE FROM Mantenimiento WHERE OPERADOR_cedula = :cedula", nativeQuery = true)
+    void deleteByOperadorCedula(@Param("cedula") String cedula);
 }

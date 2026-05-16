@@ -5,9 +5,11 @@ import co.edu.unbosque.BDFinal_V1.Modelo.dto.ClaseResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
 import co.edu.unbosque.BDFinal_V1.Servicio.ClaseService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -50,6 +52,12 @@ public class ClaseController {
     @GetMapping("/sala/{idSala}")
     public ResponseEntity<List<ClaseResponseDTO>> buscarPorSala(@PathVariable Integer idSala) {
         return ResponseEntity.ok(claseService.buscarPorSala(idSala));
+    }
+
+    @GetMapping("/fecha/{fecha}")
+    public ResponseEntity<List<ClaseResponseDTO>> buscarPorFecha(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+        return ResponseEntity.ok(claseService.buscarPorFecha(fecha));
     }
 
     @PostMapping

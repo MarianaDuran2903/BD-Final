@@ -1,14 +1,13 @@
 package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
-import co.edu.unbosque.BDFinal_V1.Modelo.emun.DisponibilidadHorario;
+import co.edu.unbosque.BDFinal_V1.Modelo.emun.DiaSemana;
 import jakarta.validation.constraints.*;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class HorarioRequestDTO {
 
     @NotNull
-    private DisponibilidadHorario disponibilidad;
+    private DiaSemana diaSemana;
 
     @NotNull
     private LocalTime horaInicio;
@@ -16,28 +15,20 @@ public class HorarioRequestDTO {
     @NotNull
     private LocalTime horaFin;
 
-    @NotNull
-    private LocalDate fecha;
-
     public HorarioRequestDTO() {}
 
-    public HorarioRequestDTO(DisponibilidadHorario disponibilidad, LocalTime horaInicio,
-                             LocalTime horaFin, LocalDate fecha) {
-        this.disponibilidad = disponibilidad;
+    public HorarioRequestDTO(DiaSemana diaSemana, LocalTime horaInicio, LocalTime horaFin) {
+        this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.fecha = fecha;
     }
 
-    public DisponibilidadHorario getDisponibilidad() { return disponibilidad; }
-    public void setDisponibilidad(DisponibilidadHorario disponibilidad) { this.disponibilidad = disponibilidad; }
+    public DiaSemana getDiaSemana() { return diaSemana; }
+    public void setDiaSemana(DiaSemana diaSemana) { this.diaSemana = diaSemana; }
 
     public LocalTime getHoraInicio() { return horaInicio; }
     public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
 
     public LocalTime getHoraFin() { return horaFin; }
     public void setHoraFin(LocalTime horaFin) { this.horaFin = horaFin; }
-
-    public LocalDate getFecha() { return fecha; }
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 }

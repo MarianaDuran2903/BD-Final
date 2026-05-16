@@ -9,6 +9,7 @@ import co.edu.unbosque.BDFinal_V1.Modelo.dto.DeporteResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.SalaResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
+import java.time.LocalDate;
 import co.edu.unbosque.BDFinal_V1.Repositorio.ClaseRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.DeporteRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.EntrenadorRepository;
@@ -61,10 +62,14 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Override
     public ClaseResponseDTO guardar(ClaseRequestDTO dto) {
+        if (claseRepository.countConflicto(dto.getFecha(), dto.getIdSala(), dto.getIdHorario()) > 0) {
+            throw new IllegalStateException("Ya existe una clase programada en esa sala, horario y fecha");
+        }
         Clase clase = new Clase();
         clase.setEstado(dto.getEstado());
         clase.setComentario(dto.getComentario());
         clase.setCupos(dto.getCupos());
+        clase.setFecha(dto.getFecha());
         clase.setSala(salaRepository.findById(dto.getIdSala())
                 .orElseThrow(() -> new RuntimeException("Sala no encontrada: " + dto.getIdSala())));
         clase.setHorario(horarioRepository.findById(dto.getIdHorario())
@@ -80,9 +85,13 @@ public class ClaseServiceImpl implements ClaseService {
     public ClaseResponseDTO actualizar(Integer id, ClaseRequestDTO dto) {
         Clase clase = claseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Clase no encontrada con id: " + id));
+        if (claseRepository.countConflictoExcluyendo(dto.getFecha(), dto.getIdSala(), dto.getIdHorario(), id) > 0) {
+            throw new IllegalStateException("Ya existe una clase programada en esa sala, horario y fecha");
+        }
         clase.setEstado(dto.getEstado());
         clase.setComentario(dto.getComentario());
         clase.setCupos(dto.getCupos());
+        clase.setFecha(dto.getFecha());
         clase.setSala(salaRepository.findById(dto.getIdSala())
                 .orElseThrow(() -> new RuntimeException("Sala no encontrada: " + dto.getIdSala())));
         clase.setHorario(horarioRepository.findById(dto.getIdHorario())
@@ -144,12 +153,21 @@ public class ClaseServiceImpl implements ClaseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClaseResponseDTO> buscarPorFecha(LocalDate fecha) {
+        return claseRepository.findByFecha(fecha).stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     private ClaseResponseDTO toResponseDTO(Clase c) {
         ClaseResponseDTO dto = new ClaseResponseDTO();
         dto.setIdClase(c.getIdClase());
         dto.setEstado(c.getEstado());
         dto.setComentario(c.getComentario());
         dto.setCupos(c.getCupos());
+        dto.setFecha(c.getFecha());
         if (c.getSala() != null) dto.setSala(mm.map(c.getSala(), SalaResponseDTO.class));
         if (c.getHorario() != null) dto.setHorario(mm.map(c.getHorario(), HorarioResponseDTO.class));
         if (c.getDeporte() != null) dto.setDeporte(mm.map(c.getDeporte(), DeporteResponseDTO.class));

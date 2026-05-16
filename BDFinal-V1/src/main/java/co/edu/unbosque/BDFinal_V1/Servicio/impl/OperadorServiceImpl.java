@@ -7,6 +7,7 @@ import co.edu.unbosque.BDFinal_V1.Modelo.dto.OperadorResponseDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EspecialidadOperador;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.Rol;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoOperador;
+import co.edu.unbosque.BDFinal_V1.Repositorio.MantenimientoRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.OperadorRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.PersonaRepository;
 import co.edu.unbosque.BDFinal_V1.Servicio.OperadorService;
@@ -23,12 +24,15 @@ public class OperadorServiceImpl implements OperadorService {
 
     private final OperadorRepository operadorRepository;
     private final PersonaRepository personaRepository;
+    private final MantenimientoRepository mantenimientoRepository;
     private final ModelMapper mm = new ModelMapper();
 
     public OperadorServiceImpl(OperadorRepository operadorRepository,
-                               PersonaRepository personaRepository) {
+                               PersonaRepository personaRepository,
+                               MantenimientoRepository mantenimientoRepository) {
         this.operadorRepository = operadorRepository;
         this.personaRepository = personaRepository;
+        this.mantenimientoRepository = mantenimientoRepository;
     }
 
     @Override
@@ -47,8 +51,11 @@ public class OperadorServiceImpl implements OperadorService {
 
     @Override
     public OperadorResponseDTO guardar(OperadorRequestDTO dto) {
+        if (personaRepository.existsById(dto.getCedula())) {
+            throw new IllegalStateException("Ya existe una persona registrada con la cédula: " + dto.getCedula());
+        }
         if (personaRepository.existsByCorreo(dto.getCorreo())) {
-            throw new IllegalArgumentException("Ya existe una persona con el correo: " + dto.getCorreo());
+            throw new IllegalStateException("Ya existe una persona registrada con el correo: " + dto.getCorreo());
         }
         Persona persona = mm.map(dto, Persona.class);
         persona.setRol(Rol.operador);
@@ -66,6 +73,9 @@ public class OperadorServiceImpl implements OperadorService {
     public OperadorResponseDTO actualizar(String cedula, OperadorRequestDTO dto) {
         Persona persona = personaRepository.findById(cedula)
                 .orElseThrow(() -> new RuntimeException("Operador no encontrado con cédula: " + cedula));
+        if (!persona.getCorreo().equals(dto.getCorreo()) && personaRepository.existsByCorreo(dto.getCorreo())) {
+            throw new IllegalStateException("Ya existe una persona registrada con el correo: " + dto.getCorreo());
+        }
         persona.setTelefono(dto.getTelefono());
         persona.setCorreo(dto.getCorreo());
         persona.setPassword(dto.getPassword());
@@ -89,7 +99,9 @@ public class OperadorServiceImpl implements OperadorService {
         if (!operadorRepository.existsById(cedula)) {
             throw new RuntimeException("Operador no encontrado con cédula: " + cedula);
         }
+        mantenimientoRepository.deleteByOperadorCedula(cedula);
         operadorRepository.deleteById(cedula);
+        personaRepository.deleteByCedula(cedula);
     }
 
     @Override

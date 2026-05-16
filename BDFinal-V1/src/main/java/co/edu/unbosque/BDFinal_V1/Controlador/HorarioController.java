@@ -2,14 +2,12 @@ package co.edu.unbosque.BDFinal_V1.Controlador;
 
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioRequestDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioResponseDTO;
-import co.edu.unbosque.BDFinal_V1.Modelo.emun.DisponibilidadHorario;
+import co.edu.unbosque.BDFinal_V1.Modelo.emun.DiaSemana;
 import co.edu.unbosque.BDFinal_V1.Servicio.HorarioService;
 import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,22 +32,9 @@ public class HorarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/fecha/{fecha}")
-    public ResponseEntity<List<HorarioResponseDTO>> buscarPorFecha(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
-        return ResponseEntity.ok(horarioService.buscarPorFecha(fecha));
-    }
-
-    @GetMapping("/disponibles")
-    public ResponseEntity<List<HorarioResponseDTO>> buscarDisponibles() {
-        return ResponseEntity.ok(horarioService.buscarDisponibles());
-    }
-
-    @GetMapping("/rango")
-    public ResponseEntity<List<HorarioResponseDTO>> buscarPorRangoFechas(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin) {
-        return ResponseEntity.ok(horarioService.buscarPorRangoFechas(inicio, fin));
+    @GetMapping("/dia/{dia}")
+    public ResponseEntity<List<HorarioResponseDTO>> buscarPorDia(@PathVariable DiaSemana dia) {
+        return ResponseEntity.ok(horarioService.buscarPorDia(dia));
     }
 
     @PostMapping
@@ -59,14 +44,8 @@ public class HorarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<HorarioResponseDTO> actualizar(@PathVariable Integer id,
-                                                         @Valid @RequestBody HorarioRequestDTO dto) {
+                                                          @Valid @RequestBody HorarioRequestDTO dto) {
         return ResponseEntity.ok(horarioService.actualizar(id, dto));
-    }
-
-    @PatchMapping("/{id}/disponibilidad")
-    public ResponseEntity<HorarioResponseDTO> cambiarDisponibilidad(@PathVariable Integer id,
-                                                                     @RequestParam DisponibilidadHorario valor) {
-        return ResponseEntity.ok(horarioService.cambiarDisponibilidad(id, valor));
     }
 
     @DeleteMapping("/{id}")

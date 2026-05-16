@@ -108,7 +108,7 @@ public class AsistirServiceImpl implements AsistirService {
                 Persona ep = clase.getEntrenador().getPersona();
                 dto.setNombreEntrenador(ep.getPrimerNombre() + " " + ep.getPrimerApellido());
             }
-            if (clase.getHorario() != null) dto.setFechaClase(clase.getHorario().getFecha());
+            dto.setFechaClase(clase.getFecha());
             if (clase.getSala() != null) dto.setIdSala(clase.getSala().getIdSala());
         }
         return dto;

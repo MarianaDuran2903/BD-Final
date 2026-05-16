@@ -1,6 +1,7 @@
 package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
+import java.time.LocalDate;
 
 public class ClaseResponseDTO {
 
@@ -8,6 +9,7 @@ public class ClaseResponseDTO {
     private EstadoClase estado;
     private String comentario;
     private Short cupos;
+    private LocalDate fecha;
 
     private SalaResponseDTO sala;
     private HorarioResponseDTO horario;
@@ -29,6 +31,9 @@ public class ClaseResponseDTO {
 
     public Short getCupos() { return cupos; }
     public void setCupos(Short cupos) { this.cupos = cupos; }
+
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
     public SalaResponseDTO getSala() { return sala; }
     public void setSala(SalaResponseDTO sala) { this.sala = sala; }

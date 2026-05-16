@@ -100,11 +100,19 @@ public class PagoServiceImpl implements PagoService {
         if (p.getMembresia() != null) {
             Membresia mem = p.getMembresia();
             dto.setMiembroCedula(mem.getId().getMiembroCedula());
+            dto.setFechaInicioMembresia(mem.getId().getFechaInicio());
+            dto.setFechaFinMembresia(mem.getFechaFin());
             dto.setEstadoMembresia(mem.getEstado());
-            if (mem.getPlan() != null) dto.setPlanDuracion(mem.getPlan().getDuracion().name());
+            if (mem.getPlan() != null) {
+                dto.setPlanId(mem.getPlan().getIdPlan());
+                dto.setPlanDuracion(mem.getPlan().getDuracion().name());
+                dto.setPlanPrecio(mem.getPlan().getPrecio());
+            }
             if (mem.getMiembro() != null && mem.getMiembro().getPersona() != null) {
                 Persona persona = mem.getMiembro().getPersona();
                 dto.setNombreMiembro(persona.getPrimerNombre() + " " + persona.getPrimerApellido());
+                dto.setCorreoMiembro(persona.getCorreo());
+                dto.setTelefonoMiembro(persona.getTelefono());
             }
         }
         return dto;

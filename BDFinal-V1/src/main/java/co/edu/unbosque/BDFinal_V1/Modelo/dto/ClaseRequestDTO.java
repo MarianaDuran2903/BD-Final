@@ -2,6 +2,7 @@ package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoClase;
 import jakarta.validation.constraints.*;
+import java.time.LocalDate;
 
 public class ClaseRequestDTO {
 
@@ -13,6 +14,9 @@ public class ClaseRequestDTO {
 
     @NotNull @Positive
     private Short cupos;
+
+    @NotNull
+    private LocalDate fecha;
 
     @NotNull
     private Integer idSala;
@@ -28,12 +32,13 @@ public class ClaseRequestDTO {
 
     public ClaseRequestDTO() {}
 
-    public ClaseRequestDTO(EstadoClase estado, String comentario, Short cupos,
+    public ClaseRequestDTO(EstadoClase estado, String comentario, Short cupos, LocalDate fecha,
                            Integer idSala, Integer idHorario, Integer idDeporte,
                            String cedulaEntrenador) {
         this.estado = estado;
         this.comentario = comentario;
         this.cupos = cupos;
+        this.fecha = fecha;
         this.idSala = idSala;
         this.idHorario = idHorario;
         this.idDeporte = idDeporte;
@@ -48,6 +53,9 @@ public class ClaseRequestDTO {
 
     public Short getCupos() { return cupos; }
     public void setCupos(Short cupos) { this.cupos = cupos; }
+
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
     public Integer getIdSala() { return idSala; }
     public void setIdSala(Integer idSala) { this.idSala = idSala; }

@@ -3,13 +3,12 @@ package co.edu.unbosque.BDFinal_V1.Servicio.impl;
 import co.edu.unbosque.BDFinal_V1.Modelo.Horario;
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioRequestDTO;
 import co.edu.unbosque.BDFinal_V1.Modelo.dto.HorarioResponseDTO;
-import co.edu.unbosque.BDFinal_V1.Modelo.emun.DisponibilidadHorario;
+import co.edu.unbosque.BDFinal_V1.Modelo.emun.DiaSemana;
 import co.edu.unbosque.BDFinal_V1.Repositorio.HorarioRepository;
 import co.edu.unbosque.BDFinal_V1.Servicio.HorarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,33 +65,9 @@ public class HorarioServiceImpl implements HorarioService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<HorarioResponseDTO> buscarPorFecha(LocalDate fecha) {
-        return horarioRepository.findByFecha(fecha).stream()
+    public List<HorarioResponseDTO> buscarPorDia(DiaSemana dia) {
+        return horarioRepository.findByDiaSemana(dia.name()).stream()
                 .map(h -> mm.map(h, HorarioResponseDTO.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<HorarioResponseDTO> buscarDisponibles() {
-        return horarioRepository.findByDisponibilidad(DisponibilidadHorario.disponible).stream()
-                .map(h -> mm.map(h, HorarioResponseDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<HorarioResponseDTO> buscarPorRangoFechas(LocalDate inicio, LocalDate fin) {
-        return horarioRepository.findByFechaBetween(inicio, fin).stream()
-                .map(h -> mm.map(h, HorarioResponseDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public HorarioResponseDTO cambiarDisponibilidad(Integer id, DisponibilidadHorario disponibilidad) {
-        Horario horario = horarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Horario no encontrado con id: " + id));
-        horario.setDisponibilidad(disponibilidad);
-        return mm.map(horarioRepository.save(horario), HorarioResponseDTO.class);
     }
 }
