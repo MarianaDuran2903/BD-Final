@@ -31,9 +31,9 @@ public class EjercicioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/miembro/{cedula}")
-    public ResponseEntity<List<EjercicioResponseDTO>> buscarPorPlanDeMiembro(@PathVariable String cedula) {
-        return ResponseEntity.ok(ejercicioService.buscarPorPlanDeMiembro(cedula));
+    @GetMapping("/asignacion/{idAsignacion}")
+    public ResponseEntity<List<EjercicioResponseDTO>> buscarPorAsignacion(@PathVariable Integer idAsignacion) {
+        return ResponseEntity.ok(ejercicioService.buscarPorAsignacion(idAsignacion));
     }
 
     @PostMapping

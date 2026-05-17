@@ -4,7 +4,8 @@ import java.util.List;
 
 public class PlanEntrenamientoResponseDTO {
 
-    private String miembroCedula;
+    private Integer idAsignacion;
+    private String cedulaMiembro;
     private String nombreMiembro;
     private String cedulaEntrenador;
     private String nombreEntrenador;
@@ -13,8 +14,11 @@ public class PlanEntrenamientoResponseDTO {
 
     public PlanEntrenamientoResponseDTO() {}
 
-    public String getMiembroCedula() { return miembroCedula; }
-    public void setMiembroCedula(String miembroCedula) { this.miembroCedula = miembroCedula; }
+    public Integer getIdAsignacion() { return idAsignacion; }
+    public void setIdAsignacion(Integer idAsignacion) { this.idAsignacion = idAsignacion; }
+
+    public String getCedulaMiembro() { return cedulaMiembro; }
+    public void setCedulaMiembro(String cedulaMiembro) { this.cedulaMiembro = cedulaMiembro; }
 
     public String getNombreMiembro() { return nombreMiembro; }
     public void setNombreMiembro(String nombreMiembro) { this.nombreMiembro = nombreMiembro; }

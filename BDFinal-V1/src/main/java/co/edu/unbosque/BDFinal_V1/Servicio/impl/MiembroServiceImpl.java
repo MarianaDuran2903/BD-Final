@@ -6,6 +6,7 @@ import co.edu.unbosque.BDFinal_V1.Modelo.dto.*;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.EstadoMembresia;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.NivelExperiencia;
 import co.edu.unbosque.BDFinal_V1.Modelo.emun.Rol;
+import co.edu.unbosque.BDFinal_V1.Repositorio.AsignacionRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.MiembroRepository;
 import co.edu.unbosque.BDFinal_V1.Repositorio.PersonaRepository;
 import co.edu.unbosque.BDFinal_V1.Servicio.MiembroService;
@@ -23,12 +24,15 @@ public class MiembroServiceImpl implements MiembroService {
 
     private final MiembroRepository miembroRepository;
     private final PersonaRepository personaRepository;
+    private final AsignacionRepository asignacionRepository;
     private final ModelMapper mm = new ModelMapper();
 
     public MiembroServiceImpl(MiembroRepository miembroRepository,
-                              PersonaRepository personaRepository) {
+                              PersonaRepository personaRepository,
+                              AsignacionRepository asignacionRepository) {
         this.miembroRepository = miembroRepository;
         this.personaRepository = personaRepository;
+        this.asignacionRepository = asignacionRepository;
     }
 
     @Override
@@ -166,18 +170,19 @@ public class MiembroServiceImpl implements MiembroService {
                     .collect(Collectors.toList()));
         }
 
-        if (m.getPlanEntrenamiento() != null) {
-            PlanEntrenamientoResponseDTO pe = new PlanEntrenamientoResponseDTO();
-            pe.setMiembroCedula(m.getCedula());
-            pe.setDescripcion(m.getPlanEntrenamiento().getDescripcion());
-            if (m.getPlanEntrenamiento().getEntrenador() != null) {
-                Persona ep = m.getPlanEntrenamiento().getEntrenador().getPersona();
-                if (ep != null) {
-                    pe.setNombreEntrenador(ep.getPrimerNombre() + " " + ep.getPrimerApellido());
-                }
-            }
-            dto.setPlanEntrenamiento(pe);
-        }
+        asignacionRepository.findByMiembro_Cedula(m.getCedula()).stream()
+                .filter(a -> a.getPlanEntrenamiento() != null)
+                .findFirst()
+                .ifPresent(a -> {
+                    PlanEntrenamientoResponseDTO pe = new PlanEntrenamientoResponseDTO();
+                    pe.setCedulaMiembro(m.getCedula());
+                    pe.setDescripcion(a.getPlanEntrenamiento().getDescripcion());
+                    if (a.getEntrenador() != null && a.getEntrenador().getPersona() != null) {
+                        Persona ep = a.getEntrenador().getPersona();
+                        pe.setNombreEntrenador(ep.getPrimerNombre() + " " + ep.getPrimerApellido());
+                    }
+                    dto.setPlanEntrenamiento(pe);
+                });
         return dto;
     }
 }

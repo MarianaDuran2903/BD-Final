@@ -9,17 +9,13 @@ import java.util.List;
 public class PlanEntrenamiento {
 
     @Id
-    @Column(name = "MIEMBRO_cedula", length = 15)
-    private String miembroCedula;
+    @Column(name = "id_asignacion")
+    private Integer idAsignacion;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "MIEMBRO_cedula")
-    private Miembro miembro;
-
-    @ManyToOne
-    @JoinColumn(name = "ENTRENADOR_cedula", nullable = false)
-    private Entrenador entrenador;
+    @JoinColumn(name = "id_asignacion")
+    private Asignacion asignacion;
 
     @Column(nullable = false, length = 100)
     private String descripcion;
@@ -29,21 +25,11 @@ public class PlanEntrenamiento {
 
     public PlanEntrenamiento() {}
 
-    public PlanEntrenamiento(String miembroCedula, Miembro miembro, Entrenador entrenador, String descripcion) {
-        this.miembroCedula = miembroCedula;
-        this.miembro = miembro;
-        this.entrenador = entrenador;
-        this.descripcion = descripcion;
-    }
+    public Integer getIdAsignacion() { return idAsignacion; }
+    public void setIdAsignacion(Integer idAsignacion) { this.idAsignacion = idAsignacion; }
 
-    public String getMiembroCedula() { return miembroCedula; }
-    public void setMiembroCedula(String miembroCedula) { this.miembroCedula = miembroCedula; }
-
-    public Miembro getMiembro() { return miembro; }
-    public void setMiembro(Miembro miembro) { this.miembro = miembro; }
-
-    public Entrenador getEntrenador() { return entrenador; }
-    public void setEntrenador(Entrenador entrenador) { this.entrenador = entrenador; }
+    public Asignacion getAsignacion() { return asignacion; }
+    public void setAsignacion(Asignacion asignacion) { this.asignacion = asignacion; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }

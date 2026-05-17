@@ -57,7 +57,8 @@ public class MantenimientoServiceImpl implements MantenimientoService {
                 .orElseThrow(() -> new RuntimeException("Máquina no encontrada: " + dto.getCodigoSerieMaquina()));
 
         MantenimientoId id = new MantenimientoId(dto.getOperadorCedula(), dto.getCodigoSerieMaquina());
-        Mantenimiento mantenimiento = new Mantenimiento();
+        Mantenimiento mantenimiento = mantenimientoRepository.findById(id)
+                .orElse(new Mantenimiento());
         mantenimiento.setId(id);
         mantenimiento.setOperador(operador);
         mantenimiento.setMaquina(maquina);

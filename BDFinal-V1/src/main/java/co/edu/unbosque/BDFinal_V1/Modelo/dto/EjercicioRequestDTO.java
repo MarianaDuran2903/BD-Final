@@ -1,6 +1,9 @@
 package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class EjercicioRequestDTO {
 
@@ -16,18 +19,18 @@ public class EjercicioRequestDTO {
     @NotNull @Positive
     private Short numSeries;
 
-    @NotBlank @Size(max = 15)
-    private String miembroCedula;
+    @NotNull
+    private Integer idAsignacion;
 
     public EjercicioRequestDTO() {}
 
     public EjercicioRequestDTO(String nombreEjerc, String descripcionEjerc,
-                               Short repsSerie, Short numSeries, String miembroCedula) {
+                               Short repsSerie, Short numSeries, Integer idAsignacion) {
         this.nombreEjerc = nombreEjerc;
         this.descripcionEjerc = descripcionEjerc;
         this.repsSerie = repsSerie;
         this.numSeries = numSeries;
-        this.miembroCedula = miembroCedula;
+        this.idAsignacion = idAsignacion;
     }
 
     public String getNombreEjerc() { return nombreEjerc; }
@@ -42,6 +45,6 @@ public class EjercicioRequestDTO {
     public Short getNumSeries() { return numSeries; }
     public void setNumSeries(Short numSeries) { this.numSeries = numSeries; }
 
-    public String getMiembroCedula() { return miembroCedula; }
-    public void setMiembroCedula(String miembroCedula) { this.miembroCedula = miembroCedula; }
+    public Integer getIdAsignacion() { return idAsignacion; }
+    public void setIdAsignacion(Integer idAsignacion) { this.idAsignacion = idAsignacion; }
 }

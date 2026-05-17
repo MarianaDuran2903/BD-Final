@@ -7,18 +7,18 @@ public class EjercicioResponseDTO {
     private String descripcionEjerc;
     private Short repsSerie;
     private Short numSeries;
-    private String miembroCedula;
+    private Integer idAsignacion;
 
     public EjercicioResponseDTO() {}
 
     public EjercicioResponseDTO(Integer idEjercicio, String nombreEjerc, String descripcionEjerc,
-                                Short repsSerie, Short numSeries, String miembroCedula) {
+                                Short repsSerie, Short numSeries, Integer idAsignacion) {
         this.idEjercicio = idEjercicio;
         this.nombreEjerc = nombreEjerc;
         this.descripcionEjerc = descripcionEjerc;
         this.repsSerie = repsSerie;
         this.numSeries = numSeries;
-        this.miembroCedula = miembroCedula;
+        this.idAsignacion = idAsignacion;
     }
 
     public Integer getIdEjercicio() { return idEjercicio; }
@@ -36,6 +36,6 @@ public class EjercicioResponseDTO {
     public Short getNumSeries() { return numSeries; }
     public void setNumSeries(Short numSeries) { this.numSeries = numSeries; }
 
-    public String getMiembroCedula() { return miembroCedula; }
-    public void setMiembroCedula(String miembroCedula) { this.miembroCedula = miembroCedula; }
+    public Integer getIdAsignacion() { return idAsignacion; }
+    public void setIdAsignacion(Integer idAsignacion) { this.idAsignacion = idAsignacion; }
 }

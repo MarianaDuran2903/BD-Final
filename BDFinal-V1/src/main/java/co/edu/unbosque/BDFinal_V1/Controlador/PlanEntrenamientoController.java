@@ -19,11 +19,16 @@ public class PlanEntrenamientoController {
         this.planEntrenamientoService = planEntrenamientoService;
     }
 
-    @GetMapping("/miembro/{cedula}")
-    public ResponseEntity<PlanEntrenamientoResponseDTO> buscarPorMiembro(@PathVariable String cedula) {
-        return planEntrenamientoService.buscarPorMiembro(cedula)
+    @GetMapping("/asignacion/{id}")
+    public ResponseEntity<PlanEntrenamientoResponseDTO> buscarPorAsignacion(@PathVariable Integer id) {
+        return planEntrenamientoService.buscarPorAsignacion(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/miembro/{cedula}")
+    public ResponseEntity<List<PlanEntrenamientoResponseDTO>> buscarPorMiembro(@PathVariable String cedula) {
+        return ResponseEntity.ok(planEntrenamientoService.buscarPorMiembro(cedula));
     }
 
     @GetMapping("/entrenador/{cedula}")
@@ -31,27 +36,22 @@ public class PlanEntrenamientoController {
         return ResponseEntity.ok(planEntrenamientoService.buscarPorEntrenador(cedula));
     }
 
-    @GetMapping("/miembro/{cedula}/tiene-plan")
-    public ResponseEntity<Boolean> tienePlanAsignado(@PathVariable String cedula) {
-        return ResponseEntity.ok(planEntrenamientoService.tienePlanAsignado(cedula));
-    }
-
     @PostMapping
-    public ResponseEntity<PlanEntrenamientoResponseDTO> asignarRutina(
+    public ResponseEntity<PlanEntrenamientoResponseDTO> crear(
             @Valid @RequestBody PlanEntrenamientoRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(planEntrenamientoService.asignarRutina(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(planEntrenamientoService.crear(dto));
     }
 
-    @PutMapping("/miembro/{cedula}")
-    public ResponseEntity<PlanEntrenamientoResponseDTO> actualizarRutina(
-            @PathVariable String cedula,
+    @PutMapping("/{idAsignacion}")
+    public ResponseEntity<PlanEntrenamientoResponseDTO> actualizar(
+            @PathVariable Integer idAsignacion,
             @Valid @RequestBody PlanEntrenamientoRequestDTO dto) {
-        return ResponseEntity.ok(planEntrenamientoService.actualizarRutina(cedula, dto));
+        return ResponseEntity.ok(planEntrenamientoService.actualizar(idAsignacion, dto));
     }
 
-    @DeleteMapping("/miembro/{cedula}")
-    public ResponseEntity<Void> eliminarRutina(@PathVariable String cedula) {
-        planEntrenamientoService.eliminarRutina(cedula);
+    @DeleteMapping("/{idAsignacion}")
+    public ResponseEntity<Void> eliminar(@PathVariable Integer idAsignacion) {
+        planEntrenamientoService.eliminar(idAsignacion);
         return ResponseEntity.noContent().build();
     }
 }

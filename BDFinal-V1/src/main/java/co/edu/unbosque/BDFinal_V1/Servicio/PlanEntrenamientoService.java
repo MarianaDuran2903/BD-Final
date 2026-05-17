@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public interface PlanEntrenamientoService {
 
-    Optional<PlanEntrenamientoResponseDTO> buscarPorMiembro(String cedula);
+    Optional<PlanEntrenamientoResponseDTO> buscarPorAsignacion(Integer idAsignacion);
 
-    PlanEntrenamientoResponseDTO asignarRutina(PlanEntrenamientoRequestDTO dto);
-
-    PlanEntrenamientoResponseDTO actualizarRutina(String cedula, PlanEntrenamientoRequestDTO dto);
-
-    void eliminarRutina(String cedula);
-
-    boolean tienePlanAsignado(String cedula);
+    List<PlanEntrenamientoResponseDTO> buscarPorMiembro(String cedula);
 
     List<PlanEntrenamientoResponseDTO> buscarPorEntrenador(String cedula);
+
+    PlanEntrenamientoResponseDTO crear(PlanEntrenamientoRequestDTO dto);
+
+    PlanEntrenamientoResponseDTO actualizar(Integer idAsignacion, PlanEntrenamientoRequestDTO dto);
+
+    void eliminar(Integer idAsignacion);
 }

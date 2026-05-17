@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 public class EjercicioServiceImpl implements EjercicioService {
 
     private final EjercicioRepository ejercicioRepository;
-    private final PlanEntrenamientoRepository planEntrenamientoRepository;
+    private final PlanEntrenamientoRepository planRepository;
     private final ModelMapper mm = new ModelMapper();
 
     public EjercicioServiceImpl(EjercicioRepository ejercicioRepository,
-                                PlanEntrenamientoRepository planEntrenamientoRepository) {
+                                PlanEntrenamientoRepository planRepository) {
         this.ejercicioRepository = ejercicioRepository;
-        this.planEntrenamientoRepository = planEntrenamientoRepository;
+        this.planRepository = planRepository;
     }
 
     @Override
@@ -44,24 +44,29 @@ public class EjercicioServiceImpl implements EjercicioService {
 
     @Override
     public EjercicioResponseDTO guardar(EjercicioRequestDTO dto) {
-        PlanEntrenamiento plan = planEntrenamientoRepository.findByMiembro_Cedula(dto.getMiembroCedula())
+        PlanEntrenamiento plan = planRepository.findByAsignacion_IdAsignacion(dto.getIdAsignacion())
                 .orElseThrow(() -> new RuntimeException(
-                        "Plan de entrenamiento no encontrado para el miembro: " + dto.getMiembroCedula()));
-        Ejercicio ejercicio = mm.map(dto, Ejercicio.class);
+                        "Plan de entrenamiento no encontrado para la asignación: " + dto.getIdAsignacion()));
+        Ejercicio ejercicio = new Ejercicio();
+        ejercicio.setNombreEjerc(dto.getNombreEjerc());
+        ejercicio.setDescripcionEjerc(dto.getDescripcionEjerc());
+        ejercicio.setRepsSerie(dto.getRepsSerie());
+        ejercicio.setNumSeries(dto.getNumSeries());
         ejercicio.setPlanEntrenamiento(plan);
         return toResponseDTO(ejercicioRepository.save(ejercicio));
     }
 
     @Override
     public EjercicioResponseDTO actualizar(Integer id, EjercicioRequestDTO dto) {
-        if (!ejercicioRepository.existsById(id)) {
-            throw new RuntimeException("Ejercicio no encontrado con id: " + id);
-        }
-        PlanEntrenamiento plan = planEntrenamientoRepository.findByMiembro_Cedula(dto.getMiembroCedula())
+        Ejercicio ejercicio = ejercicioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado con id: " + id));
+        PlanEntrenamiento plan = planRepository.findByAsignacion_IdAsignacion(dto.getIdAsignacion())
                 .orElseThrow(() -> new RuntimeException(
-                        "Plan de entrenamiento no encontrado para el miembro: " + dto.getMiembroCedula()));
-        Ejercicio ejercicio = mm.map(dto, Ejercicio.class);
-        ejercicio.setIdEjercicio(id);
+                        "Plan de entrenamiento no encontrado para la asignación: " + dto.getIdAsignacion()));
+        ejercicio.setNombreEjerc(dto.getNombreEjerc());
+        ejercicio.setDescripcionEjerc(dto.getDescripcionEjerc());
+        ejercicio.setRepsSerie(dto.getRepsSerie());
+        ejercicio.setNumSeries(dto.getNumSeries());
         ejercicio.setPlanEntrenamiento(plan);
         return toResponseDTO(ejercicioRepository.save(ejercicio));
     }
@@ -76,8 +81,8 @@ public class EjercicioServiceImpl implements EjercicioService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EjercicioResponseDTO> buscarPorPlanDeMiembro(String cedula) {
-        return ejercicioRepository.findByPlanEntrenamiento_MiembroCedula(cedula).stream()
+    public List<EjercicioResponseDTO> buscarPorAsignacion(Integer idAsignacion) {
+        return ejercicioRepository.findByPlanEntrenamiento_IdAsignacion(idAsignacion).stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -85,7 +90,7 @@ public class EjercicioServiceImpl implements EjercicioService {
     private EjercicioResponseDTO toResponseDTO(Ejercicio e) {
         EjercicioResponseDTO dto = mm.map(e, EjercicioResponseDTO.class);
         if (e.getPlanEntrenamiento() != null) {
-            dto.setMiembroCedula(e.getPlanEntrenamiento().getMiembroCedula());
+            dto.setIdAsignacion(e.getPlanEntrenamiento().getIdAsignacion());
         }
         return dto;
     }

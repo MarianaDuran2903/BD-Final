@@ -46,7 +46,7 @@ public class Entrenador {
     private List<Clase> clases = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador")
-    private List<PlanEntrenamiento> planesEntrenamiento = new ArrayList<>();
+    private List<Asignacion> asignaciones = new ArrayList<>();
 
     public Entrenador() {}
 
@@ -84,6 +84,6 @@ public class Entrenador {
     public List<Clase> getClases() { return clases; }
     public void setClases(List<Clase> clases) { this.clases = clases; }
 
-    public List<PlanEntrenamiento> getPlanesEntrenamiento() { return planesEntrenamiento; }
-    public void setPlanesEntrenamiento(List<PlanEntrenamiento> planesEntrenamiento) { this.planesEntrenamiento = planesEntrenamiento; }
+    public List<Asignacion> getAsignaciones() { return asignaciones; }
+    public void setAsignaciones(List<Asignacion> asignaciones) { this.asignaciones = asignaciones; }
 }

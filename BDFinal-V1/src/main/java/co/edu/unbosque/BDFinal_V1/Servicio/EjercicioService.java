@@ -17,5 +17,5 @@ public interface EjercicioService {
 
     void eliminar(Integer id);
 
-    List<EjercicioResponseDTO> buscarPorPlanDeMiembro(String cedula);
+    List<EjercicioResponseDTO> buscarPorAsignacion(Integer idAsignacion);
 }

@@ -35,9 +35,6 @@ public class Miembro {
     @OneToMany(mappedBy = "miembro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestriccionMedica> restriccionesMedicas = new ArrayList<>();
 
-    @OneToOne(mappedBy = "miembro", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PlanEntrenamiento planEntrenamiento;
-
     public Miembro() {}
 
     public Miembro(String cedula, Persona persona, Short altura, BigDecimal pesoActual, NivelExperiencia nivelExperiencia) {
@@ -69,6 +66,4 @@ public class Miembro {
     public List<RestriccionMedica> getRestriccionesMedicas() { return restriccionesMedicas; }
     public void setRestriccionesMedicas(List<RestriccionMedica> restriccionesMedicas) { this.restriccionesMedicas = restriccionesMedicas; }
 
-    public PlanEntrenamiento getPlanEntrenamiento() { return planEntrenamiento; }
-    public void setPlanEntrenamiento(PlanEntrenamiento planEntrenamiento) { this.planEntrenamiento = planEntrenamiento; }
 }

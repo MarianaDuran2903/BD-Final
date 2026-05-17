@@ -18,6 +18,6 @@ public interface EjercicioRepository extends JpaRepository<Ejercicio, Integer> {
     @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM Ejercicio e WHERE e.idEjercicio = :id")
     boolean existsById(@Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM EJERCICIO WHERE PLAN_ENTRENAMIENTO_MIEMBRO_cedula = :cedula", nativeQuery = true)
-    List<Ejercicio> findByPlanEntrenamiento_MiembroCedula(@Param("cedula") String cedula);
+    @Query(value = "SELECT * FROM EJERCICIO WHERE PLAN_ENTRENAMIENTO_id_asignacion = :idAsignacion", nativeQuery = true)
+    List<Ejercicio> findByPlanEntrenamiento_IdAsignacion(@Param("idAsignacion") Integer idAsignacion);
 }

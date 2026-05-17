@@ -24,7 +24,7 @@ public class Ejercicio {
     private Short numSeries;
 
     @ManyToOne
-    @JoinColumn(name = "PLAN_ENTRENAMIENTO_MIEMBRO_cedula", nullable = false)
+    @JoinColumn(name = "PLAN_ENTRENAMIENTO_id_asignacion", nullable = false)
     private PlanEntrenamiento planEntrenamiento;
 
     public Ejercicio() {}

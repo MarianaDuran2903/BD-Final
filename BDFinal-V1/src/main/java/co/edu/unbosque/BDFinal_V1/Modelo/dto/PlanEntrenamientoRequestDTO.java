@@ -1,31 +1,26 @@
 package co.edu.unbosque.BDFinal_V1.Modelo.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class PlanEntrenamientoRequestDTO {
 
-    @NotBlank @Size(max = 15)
-    private String miembroCedula;
-
-    @NotBlank @Size(max = 15)
-    private String cedulaEntrenador;
+    @NotNull
+    private Integer idAsignacion;
 
     @NotBlank @Size(max = 100)
     private String descripcion;
 
     public PlanEntrenamientoRequestDTO() {}
 
-    public PlanEntrenamientoRequestDTO(String miembroCedula, String cedulaEntrenador, String descripcion) {
-        this.miembroCedula = miembroCedula;
-        this.cedulaEntrenador = cedulaEntrenador;
+    public PlanEntrenamientoRequestDTO(Integer idAsignacion, String descripcion) {
+        this.idAsignacion = idAsignacion;
         this.descripcion = descripcion;
     }
 
-    public String getMiembroCedula() { return miembroCedula; }
-    public void setMiembroCedula(String miembroCedula) { this.miembroCedula = miembroCedula; }
-
-    public String getCedulaEntrenador() { return cedulaEntrenador; }
-    public void setCedulaEntrenador(String cedulaEntrenador) { this.cedulaEntrenador = cedulaEntrenador; }
+    public Integer getIdAsignacion() { return idAsignacion; }
+    public void setIdAsignacion(Integer idAsignacion) { this.idAsignacion = idAsignacion; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
