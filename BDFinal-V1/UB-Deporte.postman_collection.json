@@ -1,0 +1,1185 @@
+{
+  "info": {
+    "name": "UB-Deporte API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Colección completa de la API REST del sistema de gestión del gimnasio UB-Deporte.\n\nBase URL: http://localhost:8585/ub-deporte\n\nTodos los campos JSON usan snake_case (spring.jackson.property-naming-strategy=SNAKE_CASE).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",          "value": "http://localhost:8585/ub-deporte" },
+    { "key": "cedula_miembro",    "value": "1020345678" },
+    { "key": "cedula_entrenador", "value": "79456123" },
+    { "key": "cedula_operador",   "value": "98765432" },
+    { "key": "cedula_admin",      "value": "12345678" }
+  ],
+  "item": [
+
+    {
+      "name": "🔐 Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@ubdeporte.com\",\n  \"password\": \"admin123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Login exitoso — administrador",
+              "status": "OK", "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"token\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"rol\": \"administrador\",\n  \"cedula\": \"12345678\",\n  \"nombre_completo\": \"Laura Sofia Pedraza Montoya\",\n  \"correo\": \"admin@ubdeporte.com\",\n  \"perfil_completo\": {\n    \"cedula\": \"12345678\",\n    \"telefono\": \"3001112233\",\n    \"correo\": \"admin@ubdeporte.com\",\n    \"primer_nombre\": \"Laura\",\n    \"segundo_nombre\": \"Sofia\",\n    \"primer_apellido\": \"Pedraza\",\n    \"segundo_apellido\": \"Montoya\",\n    \"fecha_nacimiento\": \"1985-04-10\",\n    \"rol\": \"administrador\"\n  }\n}"
+            },
+            {
+              "name": "Login exitoso — miembro",
+              "status": "OK", "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"token\": \"661f9511-f30c-52e5-b827-557766551111\",\n  \"rol\": \"miembro\",\n  \"cedula\": \"1020345678\",\n  \"nombre_completo\": \"Carlos Rodriguez Perez\",\n  \"correo\": \"carlos.rodriguez@email.com\",\n  \"perfil_completo\": {\n    \"cedula\": \"1020345678\",\n    \"primer_nombre\": \"Carlos\",\n    \"primer_apellido\": \"Rodriguez\",\n    \"segundo_apellido\": \"Perez\",\n    \"correo\": \"carlos.rodriguez@email.com\",\n    \"telefono\": \"3101234567\",\n    \"fecha_nacimiento\": \"1995-03-15\",\n    \"rol\": \"miembro\",\n    \"altura\": 175,\n    \"peso_actual\": 78.50,\n    \"nivel_experiencia\": \"avanzado\",\n    \"membresia_estado\": \"activa\",\n    \"plan_nombre\": \"Plan Mensual Plus\"\n  }\n}"
+            },
+            {
+              "name": "Credenciales incorrectas",
+              "status": "Unauthorized", "code": 401,
+              "body": "{\n  \"error\": \"Credenciales incorrectas\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "👤 Personas",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/personas", "host": ["{{base_url}}"], "path": ["api","personas"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK", "code": 200,
+              "body": "[\n  {\n    \"cedula\": \"12345678\",\n    \"telefono\": \"3001112233\",\n    \"correo\": \"admin@ubdeporte.com\",\n    \"primer_nombre\": \"Laura\",\n    \"segundo_nombre\": \"Sofia\",\n    \"primer_apellido\": \"Pedraza\",\n    \"segundo_apellido\": \"Montoya\",\n    \"fecha_nacimiento\": \"1985-04-10\",\n    \"rol\": \"administrador\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Buscar por cédula",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/personas/{{cedula_admin}}", "host": ["{{base_url}}"], "path": ["api","personas","{{cedula_admin}}"] }
+          }
+        },
+        {
+          "name": "Buscar por correo",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/personas/correo/admin@ubdeporte.com", "host": ["{{base_url}}"], "path": ["api","personas","correo","admin@ubdeporte.com"] }
+          }
+        },
+        {
+          "name": "Buscar por rol",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/personas/rol/administrador", "host": ["{{base_url}}"], "path": ["api","personas","rol","administrador"],
+              "variable": [{ "key": "rol", "value": "administrador", "description": "miembro | entrenador | operador | administrador" }]
+            }
+          }
+        },
+        {
+          "name": "Existe correo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/personas/existe-correo?correo=admin@ubdeporte.com",
+              "host": ["{{base_url}}"], "path": ["api","personas","existe-correo"],
+              "query": [{ "key": "correo", "value": "admin@ubdeporte.com" }]
+            }
+          },
+          "response": [{ "name": "200 OK", "code": 200, "body": "true" }]
+        },
+        {
+          "name": "Crear persona",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/personas", "host": ["{{base_url}}"], "path": ["api","personas"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"11223344\",\n  \"telefono\": \"3009998877\",\n  \"correo\": \"nuevo@ubdeporte.com\",\n  \"password\": \"pass123\",\n  \"primer_nombre\": \"Juan\",\n  \"segundo_nombre\": \"Carlos\",\n  \"primer_apellido\": \"Garcia\",\n  \"segundo_apellido\": \"Lopez\",\n  \"fecha_nacimiento\": \"1990-06-20\",\n  \"rol\": \"administrador\"\n}"
+            }
+          },
+          "response": [{ "name": "201 Created", "code": 201, "body": "{\n  \"cedula\": \"11223344\",\n  \"telefono\": \"3009998877\",\n  \"correo\": \"nuevo@ubdeporte.com\",\n  \"primer_nombre\": \"Juan\",\n  \"segundo_nombre\": \"Carlos\",\n  \"primer_apellido\": \"Garcia\",\n  \"segundo_apellido\": \"Lopez\",\n  \"fecha_nacimiento\": \"1990-06-20\",\n  \"rol\": \"administrador\"\n}" }]
+        },
+        {
+          "name": "Actualizar persona",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/personas/{{cedula_admin}}", "host": ["{{base_url}}"], "path": ["api","personas","{{cedula_admin}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"12345678\",\n  \"telefono\": \"3001119999\",\n  \"correo\": \"admin@ubdeporte.com\",\n  \"password\": \"nuevapass123\",\n  \"primer_nombre\": \"Laura\",\n  \"segundo_nombre\": \"Sofia\",\n  \"primer_apellido\": \"Pedraza\",\n  \"segundo_apellido\": \"Montoya\",\n  \"fecha_nacimiento\": \"1985-04-10\",\n  \"rol\": \"administrador\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar persona",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/personas/11223344", "host": ["{{base_url}}"], "path": ["api","personas","11223344"] }
+          },
+          "response": [{ "name": "204 No Content", "code": 204, "body": "" }]
+        }
+      ]
+    },
+
+    {
+      "name": "🧍 Miembros",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/miembros", "host": ["{{base_url}}"], "path": ["api","miembros"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "code": 200,
+              "body": "[\n  {\n    \"cedula\": \"1020345678\",\n    \"telefono\": \"3101234567\",\n    \"correo\": \"carlos.rodriguez@email.com\",\n    \"primer_nombre\": \"Carlos\",\n    \"primer_apellido\": \"Rodriguez\",\n    \"segundo_apellido\": \"Perez\",\n    \"fecha_nacimiento\": \"1995-03-15\",\n    \"rol\": \"miembro\",\n    \"altura\": 175,\n    \"peso_actual\": 78.50,\n    \"nivel_experiencia\": \"avanzado\",\n    \"membresia_estado\": \"activa\",\n    \"plan_nombre\": \"Plan Mensual Plus\",\n    \"restricciones_medicas\": [],\n    \"plan_entrenamiento\": null\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Buscar por cédula",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/miembros/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","miembros","{{cedula_miembro}}"] }
+          }
+        },
+        {
+          "name": "Filtrar por nivel de experiencia",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/miembros/nivel/avanzado", "host": ["{{base_url}}"], "path": ["api","miembros","nivel","avanzado"],
+              "variable": [{ "key": "nivel", "value": "avanzado", "description": "novato | avanzado | profesional" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por rango de altura",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/miembros/altura?min=160&max=185",
+              "host": ["{{base_url}}"], "path": ["api","miembros","altura"],
+              "query": [{ "key": "min", "value": "160" }, { "key": "max", "value": "185" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por rango de peso",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/miembros/peso?min=60&max=100",
+              "host": ["{{base_url}}"], "path": ["api","miembros","peso"],
+              "query": [{ "key": "min", "value": "60" }, { "key": "max", "value": "100" }]
+            }
+          }
+        },
+        {
+          "name": "Existe miembro",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/miembros/{{cedula_miembro}}/existe", "host": ["{{base_url}}"], "path": ["api","miembros","{{cedula_miembro}}","existe"] }
+          },
+          "response": [{ "name": "200 OK", "code": 200, "body": "true" }]
+        },
+        {
+          "name": "Crear miembro",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/miembros", "host": ["{{base_url}}"], "path": ["api","miembros"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"1020345678\",\n  \"telefono\": \"3101234567\",\n  \"correo\": \"carlos.rodriguez@email.com\",\n  \"password\": \"carlos123\",\n  \"primer_nombre\": \"Carlos\",\n  \"primer_apellido\": \"Rodriguez\",\n  \"segundo_apellido\": \"Perez\",\n  \"fecha_nacimiento\": \"1995-03-15\",\n  \"altura\": 175,\n  \"peso_actual\": 78.50,\n  \"nivel_experiencia\": \"avanzado\"\n}"
+            }
+          },
+          "response": [{ "name": "201 Created", "code": 201, "body": "{\n  \"cedula\": \"1020345678\",\n  \"primer_nombre\": \"Carlos\",\n  \"primer_apellido\": \"Rodriguez\",\n  \"segundo_apellido\": \"Perez\",\n  \"correo\": \"carlos.rodriguez@email.com\",\n  \"telefono\": \"3101234567\",\n  \"fecha_nacimiento\": \"1995-03-15\",\n  \"rol\": \"miembro\",\n  \"altura\": 175,\n  \"peso_actual\": 78.50,\n  \"nivel_experiencia\": \"avanzado\",\n  \"membresia_estado\": null,\n  \"plan_nombre\": null\n}" }]
+        },
+        {
+          "name": "Actualizar miembro",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/miembros/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","miembros","{{cedula_miembro}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"1020345678\",\n  \"telefono\": \"3101234567\",\n  \"correo\": \"carlos.rodriguez@email.com\",\n  \"password\": \"nuevapass\",\n  \"primer_nombre\": \"Carlos\",\n  \"primer_apellido\": \"Rodriguez\",\n  \"segundo_apellido\": \"Perez\",\n  \"fecha_nacimiento\": \"1995-03-15\",\n  \"altura\": 176,\n  \"peso_actual\": 77.00,\n  \"nivel_experiencia\": \"profesional\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar miembro",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/miembros/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","miembros","{{cedula_miembro}}"] }
+          },
+          "response": [{ "name": "204 No Content", "code": 204, "body": "" }]
+        }
+      ]
+    },
+
+    {
+      "name": "🏋️ Entrenadores",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores", "host": ["{{base_url}}"], "path": ["api","entrenadores"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "code": 200,
+              "body": "[\n  {\n    \"cedula\": \"79456123\",\n    \"telefono\": \"3112345678\",\n    \"correo\": \"jorge.ramirez@ubdeporte.com\",\n    \"primer_nombre\": \"Jorge\",\n    \"primer_apellido\": \"Ramirez\",\n    \"segundo_apellido\": \"Cardenas\",\n    \"fecha_nacimiento\": \"1985-06-10\",\n    \"rol\": \"entrenador\",\n    \"tipo_entrenamiento\": \"fuerza\",\n    \"tiempo_experiencia\": 96,\n    \"nivel_exigencia\": \"alto\",\n    \"fecha_ingreso_sis\": \"2021-02-15\",\n    \"deportes\": [\n      { \"id_deporte\": 1, \"nombre\": \"Crossfit\" },\n      { \"id_deporte\": 2, \"nombre\": \"Levantamiento de pesas\" }\n    ]\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Buscar por cédula",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","entrenadores","{{cedula_entrenador}}"] }
+          }
+        },
+        {
+          "name": "Filtrar por tipo de entrenamiento",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores/tipo/fuerza", "host": ["{{base_url}}"], "path": ["api","entrenadores","tipo","fuerza"],
+              "variable": [{ "key": "tipo", "value": "fuerza", "description": "fuerza | aerobico | flexibilidad | equilibrio" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por nivel de exigencia",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores/nivel/alto", "host": ["{{base_url}}"], "path": ["api","entrenadores","nivel","alto"],
+              "variable": [{ "key": "nivel", "value": "alto", "description": "bajo | moderado | medio | alto | extremo" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por deporte",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores/deporte/1", "host": ["{{base_url}}"], "path": ["api","entrenadores","deporte","1"] }
+          }
+        },
+        {
+          "name": "Existe entrenador",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/entrenadores/{{cedula_entrenador}}/existe", "host": ["{{base_url}}"], "path": ["api","entrenadores","{{cedula_entrenador}}","existe"] }
+          }
+        },
+        {
+          "name": "Crear entrenador",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/entrenadores", "host": ["{{base_url}}"], "path": ["api","entrenadores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"79456123\",\n  \"telefono\": \"3112345678\",\n  \"correo\": \"jorge.ramirez@ubdeporte.com\",\n  \"password\": \"jorge123\",\n  \"primer_nombre\": \"Jorge\",\n  \"primer_apellido\": \"Ramirez\",\n  \"segundo_apellido\": \"Cardenas\",\n  \"fecha_nacimiento\": \"1985-06-10\",\n  \"tipo_entrenamiento\": \"fuerza\",\n  \"tiempo_experiencia\": 96,\n  \"nivel_exigencia\": \"alto\",\n  \"fecha_ingreso_sis\": \"2021-02-15\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar entrenador",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/entrenadores/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","entrenadores","{{cedula_entrenador}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"79456123\",\n  \"telefono\": \"3112345678\",\n  \"correo\": \"jorge.ramirez@ubdeporte.com\",\n  \"password\": \"jorge123\",\n  \"primer_nombre\": \"Jorge\",\n  \"primer_apellido\": \"Ramirez\",\n  \"segundo_apellido\": \"Cardenas\",\n  \"fecha_nacimiento\": \"1985-06-10\",\n  \"tipo_entrenamiento\": \"fuerza\",\n  \"tiempo_experiencia\": 100,\n  \"nivel_exigencia\": \"extremo\",\n  \"fecha_ingreso_sis\": \"2021-02-15\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar entrenador",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/entrenadores/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","entrenadores","{{cedula_entrenador}}"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "🔧 Operadores",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operadores", "host": ["{{base_url}}"], "path": ["api","operadores"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "code": 200,
+              "body": "[\n  {\n    \"cedula\": \"98765432\",\n    \"telefono\": \"3005556677\",\n    \"correo\": \"operador@ubdeporte.com\",\n    \"primer_nombre\": \"Ricardo\",\n    \"primer_apellido\": \"Vargas\",\n    \"segundo_apellido\": \"Ospina\",\n    \"fecha_nacimiento\": \"1980-09-14\",\n    \"rol\": \"operador\",\n    \"nivel_tecnico\": \"avanzado\",\n    \"especialidad\": \"mecanico\",\n    \"tipo_operador\": \"preventivo\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Buscar por cédula",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operadores/{{cedula_operador}}", "host": ["{{base_url}}"], "path": ["api","operadores","{{cedula_operador}}"] }
+          }
+        },
+        {
+          "name": "Filtrar por tipo de operador",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operadores/tipo/preventivo", "host": ["{{base_url}}"], "path": ["api","operadores","tipo","preventivo"],
+              "variable": [{ "key": "tipo", "value": "preventivo", "description": "preventivo | correctivo | locativo" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por especialidad",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/operadores/especialidad/mecanico", "host": ["{{base_url}}"], "path": ["api","operadores","especialidad","mecanico"],
+              "variable": [{ "key": "especialidad", "value": "mecanico", "description": "mecanico | electrico | inspeccion | gestion_instalaciones" }]
+            }
+          }
+        },
+        {
+          "name": "Crear operador",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/operadores", "host": ["{{base_url}}"], "path": ["api","operadores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"98765432\",\n  \"telefono\": \"3005556677\",\n  \"correo\": \"operador@ubdeporte.com\",\n  \"password\": \"operador123\",\n  \"primer_nombre\": \"Ricardo\",\n  \"primer_apellido\": \"Vargas\",\n  \"segundo_apellido\": \"Ospina\",\n  \"fecha_nacimiento\": \"1980-09-14\",\n  \"nivel_tecnico\": \"avanzado\",\n  \"especialidad\": \"mecanico\",\n  \"tipo_operador\": \"preventivo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar operador",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/operadores/{{cedula_operador}}", "host": ["{{base_url}}"], "path": ["api","operadores","{{cedula_operador}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cedula\": \"98765432\",\n  \"telefono\": \"3005556677\",\n  \"correo\": \"operador@ubdeporte.com\",\n  \"password\": \"operador123\",\n  \"primer_nombre\": \"Ricardo\",\n  \"primer_apellido\": \"Vargas\",\n  \"segundo_apellido\": \"Ospina\",\n  \"fecha_nacimiento\": \"1980-09-14\",\n  \"nivel_tecnico\": \"experto\",\n  \"especialidad\": \"electrico\",\n  \"tipo_operador\": \"correctivo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar operador",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/api/operadores/{{cedula_operador}}", "host": ["{{base_url}}"], "path": ["api","operadores","{{cedula_operador}}"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "⚽ Deportes",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/deportes", "host": ["{{base_url}}"], "path": ["api","deportes"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  { \"id_deporte\": 1, \"nombre\": \"Crossfit\", \"descripcion\": \"Entrenamiento funcional de alta intensidad\" },\n  { \"id_deporte\": 2, \"nombre\": \"Yoga\", \"descripcion\": \"Disciplina física y mental\" }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/deportes/1", "host": ["{{base_url}}"], "path": ["api","deportes","1"] } }
+        },
+        {
+          "name": "Buscar por nombre",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/deportes/nombre/Crossfit", "host": ["{{base_url}}"], "path": ["api","deportes","nombre","Crossfit"] } }
+        },
+        {
+          "name": "Crear deporte",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/deportes", "host": ["{{base_url}}"], "path": ["api","deportes"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Crossfit\",\n  \"descripcion\": \"Entrenamiento funcional de alta intensidad\"\n}" }
+          }
+        },
+        {
+          "name": "Actualizar deporte",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/deportes/1", "host": ["{{base_url}}"], "path": ["api","deportes","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"CrossFit Avanzado\",\n  \"descripcion\": \"Entrenamiento funcional de alta intensidad para atletas\"\n}" }
+          }
+        },
+        {
+          "name": "Eliminar deporte",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/deportes/1", "host": ["{{base_url}}"], "path": ["api","deportes","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🏟️ Salas",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/salas", "host": ["{{base_url}}"], "path": ["api","salas"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  { \"id_sala\": 1, \"nombre\": \"Sala Principal\", \"capacidad\": 30 },\n  { \"id_sala\": 2, \"nombre\": \"Sala Spinning\", \"capacidad\": 18 }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/salas/1", "host": ["{{base_url}}"], "path": ["api","salas","1"] } }
+        },
+        {
+          "name": "Filtrar por capacidad mínima",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/salas/capacidad?min=20", "host": ["{{base_url}}"], "path": ["api","salas","capacidad"], "query": [{ "key": "min", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Crear sala",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/salas", "host": ["{{base_url}}"], "path": ["api","salas"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Sala Principal\",\n  \"capacidad\": 30\n}" }
+          }
+        },
+        {
+          "name": "Actualizar sala",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/salas/1", "host": ["{{base_url}}"], "path": ["api","salas","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Sala Principal A\",\n  \"capacidad\": 35\n}" }
+          }
+        },
+        {
+          "name": "Eliminar sala",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/salas/1", "host": ["{{base_url}}"], "path": ["api","salas","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🕐 Horarios",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/horarios", "host": ["{{base_url}}"], "path": ["api","horarios"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_horario\": 1,\n    \"fecha\": \"2026-05-15\",\n    \"hora_inicio\": \"07:00:00\",\n    \"hora_fin\": \"08:00:00\",\n    \"disponibilidad\": \"disponible\"\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/horarios/1", "host": ["{{base_url}}"], "path": ["api","horarios","1"] } }
+        },
+        {
+          "name": "Buscar por fecha",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/horarios/fecha/2026-05-15", "host": ["{{base_url}}"], "path": ["api","horarios","fecha","2026-05-15"] } }
+        },
+        {
+          "name": "Listar disponibles",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/horarios/disponibles", "host": ["{{base_url}}"], "path": ["api","horarios","disponibles"] } }
+        },
+        {
+          "name": "Buscar por rango de fechas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/horarios/rango?inicio=2026-05-01&fin=2026-05-31",
+              "host": ["{{base_url}}"], "path": ["api","horarios","rango"],
+              "query": [{ "key": "inicio", "value": "2026-05-01" }, { "key": "fin", "value": "2026-05-31" }]
+            }
+          }
+        },
+        {
+          "name": "Crear horario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/horarios", "host": ["{{base_url}}"], "path": ["api","horarios"] },
+            "body": { "mode": "raw", "raw": "{\n  \"fecha\": \"2026-05-15\",\n  \"hora_inicio\": \"07:00:00\",\n  \"hora_fin\": \"08:00:00\",\n  \"disponibilidad\": \"disponible\"\n}" }
+          }
+        },
+        {
+          "name": "Actualizar horario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/horarios/1", "host": ["{{base_url}}"], "path": ["api","horarios","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"fecha\": \"2026-05-15\",\n  \"hora_inicio\": \"08:00:00\",\n  \"hora_fin\": \"09:00:00\",\n  \"disponibilidad\": \"disponible\"\n}" }
+          }
+        },
+        {
+          "name": "Cambiar disponibilidad",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/horarios/1/disponibilidad?valor=ocupado",
+              "host": ["{{base_url}}"], "path": ["api","horarios","1","disponibilidad"],
+              "query": [{ "key": "valor", "value": "ocupado", "description": "disponible | ocupado | cancelado" }]
+            }
+          }
+        },
+        {
+          "name": "Eliminar horario",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/horarios/1", "host": ["{{base_url}}"], "path": ["api","horarios","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "💳 Planes de Membresía",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/planes", "host": ["{{base_url}}"], "path": ["api","planes"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  { \"id_plan\": 1, \"nombre\": \"Plan Mensual Plus\", \"descripcion\": \"Acceso completo 1 mes\", \"duracion\": \"mensual\", \"precio\": 120000 },\n  { \"id_plan\": 2, \"nombre\": \"Plan Semestral\", \"descripcion\": \"Acceso completo 6 meses\", \"duracion\": \"semestral\", \"precio\": 600000 }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/planes/1", "host": ["{{base_url}}"], "path": ["api","planes","1"] } }
+        },
+        {
+          "name": "Filtrar por duración",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/planes/duracion/mensual", "host": ["{{base_url}}"], "path": ["api","planes","duracion","mensual"],
+              "variable": [{ "key": "duracion", "value": "mensual", "description": "mensual | trimestral | semestral | anual" }]
+            }
+          }
+        },
+        {
+          "name": "Crear plan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/planes", "host": ["{{base_url}}"], "path": ["api","planes"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Plan Mensual Plus\",\n  \"descripcion\": \"Acceso completo al gimnasio durante 1 mes\",\n  \"duracion\": \"mensual\",\n  \"precio\": 120000\n}" }
+          }
+        },
+        {
+          "name": "Actualizar plan",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/planes/1", "host": ["{{base_url}}"], "path": ["api","planes","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Plan Mensual Plus\",\n  \"descripcion\": \"Acceso completo al gimnasio durante 1 mes\",\n  \"duracion\": \"mensual\",\n  \"precio\": 130000\n}" }
+          }
+        },
+        {
+          "name": "Eliminar plan",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/planes/1", "host": ["{{base_url}}"], "path": ["api","planes","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "📅 Clases",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/clases", "host": ["{{base_url}}"], "path": ["api","clases"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_clase\": 1,\n    \"estado\": \"programada\",\n    \"comentario\": \"Traer hidratación\",\n    \"cupos\": 20,\n    \"sala\": { \"id_sala\": 1, \"nombre\": \"Sala Principal\", \"capacidad\": 30 },\n    \"horario\": { \"id_horario\": 1, \"fecha\": \"2026-05-15\", \"hora_inicio\": \"07:00:00\", \"hora_fin\": \"08:00:00\", \"disponibilidad\": \"ocupado\" },\n    \"deporte\": { \"id_deporte\": 1, \"nombre\": \"Crossfit\" },\n    \"cedula_entrenador\": \"79456123\",\n    \"nombre_entrenador\": \"Jorge Ramirez\"\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/clases/1", "host": ["{{base_url}}"], "path": ["api","clases","1"] } }
+        },
+        {
+          "name": "Clases de un entrenador",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/clases/entrenador/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","clases","entrenador","{{cedula_entrenador}}"] } }
+        },
+        {
+          "name": "Clases por deporte",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/clases/deporte/1", "host": ["{{base_url}}"], "path": ["api","clases","deporte","1"] } }
+        },
+        {
+          "name": "Filtrar por estado",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/clases/estado/programada", "host": ["{{base_url}}"], "path": ["api","clases","estado","programada"],
+              "variable": [{ "key": "estado", "value": "programada", "description": "programada | cancelada | finalizada" }]
+            }
+          }
+        },
+        {
+          "name": "Clases en una sala",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/clases/sala/1", "host": ["{{base_url}}"], "path": ["api","clases","sala","1"] } }
+        },
+        {
+          "name": "Crear clase",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/clases", "host": ["{{base_url}}"], "path": ["api","clases"] },
+            "body": { "mode": "raw", "raw": "{\n  \"comentario\": \"Traer hidratación\",\n  \"cupos\": 20,\n  \"estado\": \"programada\",\n  \"id_sala\": 1,\n  \"id_horario\": 1,\n  \"id_deporte\": 1\n}" }
+          }
+        },
+        {
+          "name": "Actualizar clase",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/clases/1", "host": ["{{base_url}}"], "path": ["api","clases","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"comentario\": \"Traer hidratación y toalla\",\n  \"cupos\": 15,\n  \"estado\": \"programada\",\n  \"id_sala\": 1,\n  \"id_horario\": 1,\n  \"id_deporte\": 1\n}" }
+          }
+        },
+        {
+          "name": "Asignar entrenador a clase",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{base_url}}/api/clases/1/entrenador/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","clases","1","entrenador","{{cedula_entrenador}}"] }
+          }
+        },
+        {
+          "name": "Eliminar clase",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/clases/1", "host": ["{{base_url}}"], "path": ["api","clases","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "✅ Asistencias",
+      "item": [
+        {
+          "name": "Asistencias de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/asistencias/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","asistencias","miembro","{{cedula_miembro}}"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"miembro_cedula\": \"1020345678\",\n    \"nombre_miembro\": \"Carlos Rodriguez\",\n    \"clase_id\": 1,\n    \"deporte\": \"Crossfit\",\n    \"nombre_entrenador\": \"Jorge Ramirez\",\n    \"fecha\": \"2026-05-15\",\n    \"hora_inicio\": \"07:00:00\"\n  }\n]" }]
+        },
+        {
+          "name": "Asistencias a una clase",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/asistencias/clase/1", "host": ["{{base_url}}"], "path": ["api","asistencias","clase","1"] } }
+        },
+        {
+          "name": "Contar asistentes en una clase",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/asistencias/clase/1/count", "host": ["{{base_url}}"], "path": ["api","asistencias","clase","1","count"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "18" }]
+        },
+        {
+          "name": "Verificar si miembro está inscrito",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/asistencias/inscrito?cedula={{cedula_miembro}}&idClase=1",
+              "host": ["{{base_url}}"], "path": ["api","asistencias","inscrito"],
+              "query": [{ "key": "cedula", "value": "{{cedula_miembro}}" }, { "key": "idClase", "value": "1" }]
+            }
+          },
+          "response": [{ "name": "200 OK", "code": 200, "body": "true" }]
+        },
+        {
+          "name": "Registrar asistencia (inscribir miembro a clase)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/asistencias", "host": ["{{base_url}}"], "path": ["api","asistencias"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"clase_id_clase\": 1\n}" }
+          },
+          "response": [{ "name": "201 Created", "code": 201, "body": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"nombre_miembro\": \"Carlos Rodriguez\",\n  \"clase_id\": 1,\n  \"deporte\": \"Crossfit\",\n  \"nombre_entrenador\": \"Jorge Ramirez\",\n  \"fecha\": \"2026-05-15\",\n  \"hora_inicio\": \"07:00:00\"\n}" }]
+        },
+        {
+          "name": "Cancelar asistencia",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/asistencias", "host": ["{{base_url}}"], "path": ["api","asistencias"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"clase_id_clase\": 1\n}" }
+          },
+          "response": [{ "name": "204 No Content", "code": 204, "body": "" }]
+        }
+      ]
+    },
+
+    {
+      "name": "🎫 Membresías",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/membresias", "host": ["{{base_url}}"], "path": ["api","membresias"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"miembro_cedula\": \"1020345678\",\n    \"nombre_miembro\": \"Carlos Rodriguez\",\n    \"id_plan\": 1,\n    \"nombre_plan\": \"Plan Mensual Plus\",\n    \"duracion\": \"mensual\",\n    \"precio\": 120000,\n    \"fecha_inicio\": \"2026-05-01\",\n    \"fecha_fin\": \"2026-06-01\",\n    \"estado\": \"activa\"\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por clave compuesta",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/membresias/{{cedula_miembro}}/1/2026-05-01", "host": ["{{base_url}}"], "path": ["api","membresias","{{cedula_miembro}}","1","2026-05-01"] } }
+        },
+        {
+          "name": "Membresías de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/membresias/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","membresias","miembro","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Filtrar por estado",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/membresias/estado/activa", "host": ["{{base_url}}"], "path": ["api","membresias","estado","activa"],
+              "variable": [{ "key": "estado", "value": "activa", "description": "activa | inactiva | vencida | suspendida" }]
+            }
+          }
+        },
+        {
+          "name": "Membresías activas de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/membresias/activas/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","membresias","activas","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Membresía vigente de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/membresias/vigente/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","membresias","vigente","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Crear membresía",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/membresias", "host": ["{{base_url}}"], "path": ["api","membresias"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"id_plan\": 1,\n  \"fecha_inicio\": \"2026-05-01\",\n  \"estado\": \"activa\"\n}" }
+          }
+        },
+        {
+          "name": "Actualizar membresía",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/membresias/{{cedula_miembro}}/1/2026-05-01", "host": ["{{base_url}}"], "path": ["api","membresias","{{cedula_miembro}}","1","2026-05-01"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"id_plan\": 1,\n  \"fecha_inicio\": \"2026-05-01\",\n  \"estado\": \"suspendida\"\n}" }
+          }
+        },
+        {
+          "name": "Eliminar membresía",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/membresias/{{cedula_miembro}}/1/2026-05-01", "host": ["{{base_url}}"], "path": ["api","membresias","{{cedula_miembro}}","1","2026-05-01"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "💰 Pagos",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/pagos", "host": ["{{base_url}}"], "path": ["api","pagos"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_pago\": 1,\n    \"metodo_pago\": \"tarjeta_credito\",\n    \"fecha_pago\": \"2026-04-01\",\n    \"valor_pagado\": 120000,\n    \"miembro_cedula\": \"1020345678\",\n    \"nombre_miembro\": \"Carlos Rodriguez Perez\",\n    \"plan_duracion\": \"mensual\",\n    \"estado_membresia\": \"activa\"\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/pagos/1", "host": ["{{base_url}}"], "path": ["api","pagos","1"] } }
+        },
+        {
+          "name": "Historial de pagos de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/pagos/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","pagos","miembro","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Filtrar por método de pago",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/pagos/metodo/tarjeta_credito", "host": ["{{base_url}}"], "path": ["api","pagos","metodo","tarjeta_credito"],
+              "variable": [{ "key": "metodo", "value": "tarjeta_credito", "description": "efectivo | tarjeta_credito | tarjeta_debito | transferencia" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por rango de fechas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/pagos/rango?inicio=2026-04-01&fin=2026-04-30",
+              "host": ["{{base_url}}"], "path": ["api","pagos","rango"],
+              "query": [{ "key": "inicio", "value": "2026-04-01" }, { "key": "fin", "value": "2026-04-30" }]
+            }
+          }
+        },
+        {
+          "name": "Registrar pago",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/pagos", "host": ["{{base_url}}"], "path": ["api","pagos"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"id_plan\": 1,\n  \"fecha_inicio_membresia\": \"2026-05-01\",\n  \"metodo_pago\": \"tarjeta_credito\",\n  \"valor_pagado\": 120000,\n  \"fecha_pago\": \"2026-05-01\"\n}" }
+          },
+          "response": [{ "name": "201 Created", "code": 201, "body": "{\n  \"id_pago\": 4,\n  \"metodo_pago\": \"tarjeta_credito\",\n  \"fecha_pago\": \"2026-05-01\",\n  \"valor_pagado\": 120000,\n  \"miembro_cedula\": \"1020345678\",\n  \"nombre_miembro\": \"Carlos Rodriguez Perez\",\n  \"plan_duracion\": \"mensual\",\n  \"estado_membresia\": \"activa\"\n}" }]
+        },
+        {
+          "name": "Eliminar pago",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/pagos/1", "host": ["{{base_url}}"], "path": ["api","pagos","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "📋 Planes de Entrenamiento",
+      "item": [
+        {
+          "name": "Plan de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/planes-entrenamiento/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento","miembro","{{cedula_miembro}}"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "{\n  \"id_plan_entrenamiento\": 1,\n  \"miembro_cedula\": \"1020345678\",\n  \"nombre_miembro\": \"Carlos Rodriguez\",\n  \"entrenador_cedula\": \"79456123\",\n  \"nombre_entrenador\": \"Jorge Ramirez\",\n  \"objetivo\": \"Aumento de masa muscular\",\n  \"duracion_semanas\": 12,\n  \"ejercicios\": []\n}" }]
+        },
+        {
+          "name": "Planes asignados por un entrenador",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/planes-entrenamiento/entrenador/{{cedula_entrenador}}", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento","entrenador","{{cedula_entrenador}}"] } }
+        },
+        {
+          "name": "¿El miembro tiene plan?",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/planes-entrenamiento/miembro/{{cedula_miembro}}/tiene-plan", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento","miembro","{{cedula_miembro}}","tiene-plan"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "true" }]
+        },
+        {
+          "name": "Asignar rutina a miembro",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/planes-entrenamiento", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"entrenador_cedula\": \"79456123\",\n  \"objetivo\": \"Aumento de masa muscular\",\n  \"duracion_semanas\": 12\n}" }
+          }
+        },
+        {
+          "name": "Actualizar rutina del miembro",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/planes-entrenamiento/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento","miembro","{{cedula_miembro}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"entrenador_cedula\": \"79456123\",\n  \"objetivo\": \"Pérdida de peso y definición\",\n  \"duracion_semanas\": 8\n}" }
+          }
+        },
+        {
+          "name": "Eliminar rutina del miembro",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/planes-entrenamiento/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","planes-entrenamiento","miembro","{{cedula_miembro}}"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🏃 Ejercicios",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/ejercicios", "host": ["{{base_url}}"], "path": ["api","ejercicios"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_ejercicio\": 1,\n    \"nombre\": \"Press de Banca\",\n    \"descripcion\": \"Ejercicio de pecho con barra\",\n    \"series\": 4,\n    \"repeticiones\": 12\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/ejercicios/1", "host": ["{{base_url}}"], "path": ["api","ejercicios","1"] } }
+        },
+        {
+          "name": "Ejercicios del plan de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/ejercicios/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","ejercicios","miembro","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Crear ejercicio",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/ejercicios", "host": ["{{base_url}}"], "path": ["api","ejercicios"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Press de Banca\",\n  \"descripcion\": \"Ejercicio de pecho con barra plana\",\n  \"series\": 4,\n  \"repeticiones\": 12,\n  \"id_plan_entrenamiento\": 1\n}" }
+          }
+        },
+        {
+          "name": "Actualizar ejercicio",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/ejercicios/1", "host": ["{{base_url}}"], "path": ["api","ejercicios","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Press de Banca\",\n  \"descripcion\": \"Ejercicio de pecho con barra plana\",\n  \"series\": 5,\n  \"repeticiones\": 10,\n  \"id_plan_entrenamiento\": 1\n}" }
+          }
+        },
+        {
+          "name": "Eliminar ejercicio",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/ejercicios/1", "host": ["{{base_url}}"], "path": ["api","ejercicios","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🩺 Restricciones Médicas",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/restricciones-medicas", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas"] } }
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/restricciones-medicas/1", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","1"] } }
+        },
+        {
+          "name": "Restricciones de un miembro",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/restricciones-medicas/miembro/{{cedula_miembro}}", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","miembro","{{cedula_miembro}}"] } }
+        },
+        {
+          "name": "Filtrar por nivel de gravedad",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/restricciones-medicas/gravedad/moderado", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","gravedad","moderado"] }
+          }
+        },
+        {
+          "name": "Filtrar por tipo de restricción",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/restricciones-medicas/tipo/lesion", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","tipo","lesion"] } }
+        },
+        {
+          "name": "Registrar restricción médica",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/restricciones-medicas", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"descripcion\": \"Lesión de rodilla derecha — evitar sentadillas profundas\",\n  \"tipo_restriccion\": \"lesion\",\n  \"nivel_gravedad\": \"moderado\",\n  \"fecha_registro\": \"2026-05-01\"\n}" }
+          }
+        },
+        {
+          "name": "Actualizar restricción médica",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/restricciones-medicas/1", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"miembro_cedula\": \"1020345678\",\n  \"descripcion\": \"Lesión de rodilla derecha — en recuperación\",\n  \"tipo_restriccion\": \"lesion\",\n  \"nivel_gravedad\": \"leve\",\n  \"fecha_registro\": \"2026-05-01\"\n}" }
+          }
+        },
+        {
+          "name": "Eliminar restricción médica",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/restricciones-medicas/1", "host": ["{{base_url}}"], "path": ["api","restricciones-medicas","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "⚙️ Máquinas",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/maquinas", "host": ["{{base_url}}"], "path": ["api","maquinas"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"codigo_serie\": 1001,\n    \"nombre_maquina\": \"Caminadora Pro\",\n    \"modelo\": \"TRX-900\",\n    \"marca\": \"LifeFitness\",\n    \"tipo_maquina\": \"cardio\",\n    \"estado\": \"operativa\",\n    \"capacidad\": 140\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por código de serie",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/maquinas/1001", "host": ["{{base_url}}"], "path": ["api","maquinas","1001"] } }
+        },
+        {
+          "name": "Filtrar por tipo",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/maquinas/tipo/cardio", "host": ["{{base_url}}"], "path": ["api","maquinas","tipo","cardio"],
+              "variable": [{ "key": "tipo", "value": "cardio", "description": "cardio | fuerza | funcional | rehabilitacion | pesas | otra" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por estado",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/maquinas/estado/operativa", "host": ["{{base_url}}"], "path": ["api","maquinas","estado","operativa"],
+              "variable": [{ "key": "estado", "value": "operativa", "description": "operativa | en_mantenimiento | fuera_de_servicio | en_reparacion" }]
+            }
+          }
+        },
+        {
+          "name": "Registrar máquina",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/maquinas", "host": ["{{base_url}}"], "path": ["api","maquinas"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre_maquina\": \"Caminadora Pro\",\n  \"modelo\": \"TRX-900\",\n  \"marca\": \"LifeFitness\",\n  \"tipo_maquina\": \"cardio\",\n  \"estado\": \"operativa\",\n  \"capacidad\": 140\n}" }
+          }
+        },
+        {
+          "name": "Actualizar máquina",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/maquinas/1001", "host": ["{{base_url}}"], "path": ["api","maquinas","1001"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre_maquina\": \"Caminadora Pro\",\n  \"modelo\": \"TRX-900\",\n  \"marca\": \"LifeFitness\",\n  \"tipo_maquina\": \"cardio\",\n  \"estado\": \"en_mantenimiento\",\n  \"capacidad\": 140\n}" }
+          }
+        },
+        {
+          "name": "Cambiar estado de máquina",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/maquinas/1001/estado?valor=fuera_de_servicio",
+              "host": ["{{base_url}}"], "path": ["api","maquinas","1001","estado"],
+              "query": [{ "key": "valor", "value": "fuera_de_servicio", "description": "operativa | en_mantenimiento | fuera_de_servicio | en_reparacion" }]
+            }
+          }
+        },
+        {
+          "name": "Eliminar máquina",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/maquinas/1001", "host": ["{{base_url}}"], "path": ["api","maquinas","1001"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🛠️ Mantenimiento",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/mantenimiento", "host": ["{{base_url}}"], "path": ["api","mantenimiento"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"operador_cedula\": \"98765432\",\n    \"nombre_operador\": \"Ricardo Vargas\",\n    \"codigo_serie_maquina\": 1001,\n    \"nombre_maquina\": \"Caminadora Pro\",\n    \"tipo_mantenimiento\": \"preventivo\",\n    \"descripcion\": \"Revisión general del motor\",\n    \"fecha_mantenimiento\": \"2026-05-10\"\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por clave compuesta",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/mantenimiento/{{cedula_operador}}/1001", "host": ["{{base_url}}"], "path": ["api","mantenimiento","{{cedula_operador}}","1001"] } }
+        },
+        {
+          "name": "Mantenimientos por operador",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/mantenimiento/operador/{{cedula_operador}}", "host": ["{{base_url}}"], "path": ["api","mantenimiento","operador","{{cedula_operador}}"] } }
+        },
+        {
+          "name": "Mantenimientos de una máquina",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/mantenimiento/maquina/1001", "host": ["{{base_url}}"], "path": ["api","mantenimiento","maquina","1001"] } }
+        },
+        {
+          "name": "Filtrar por tipo de mantenimiento",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/mantenimiento/tipo/preventivo", "host": ["{{base_url}}"], "path": ["api","mantenimiento","tipo","preventivo"],
+              "variable": [{ "key": "tipo", "value": "preventivo", "description": "preventivo | correctivo | predictivo" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por rango de fechas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/mantenimiento/rango?inicio=2026-05-01&fin=2026-05-31",
+              "host": ["{{base_url}}"], "path": ["api","mantenimiento","rango"],
+              "query": [{ "key": "inicio", "value": "2026-05-01" }, { "key": "fin", "value": "2026-05-31" }]
+            }
+          }
+        },
+        {
+          "name": "Registrar mantenimiento",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/mantenimiento", "host": ["{{base_url}}"], "path": ["api","mantenimiento"] },
+            "body": { "mode": "raw", "raw": "{\n  \"operador_cedula\": \"98765432\",\n  \"codigo_serie_maquina\": 1001,\n  \"tipo_mantenimiento\": \"preventivo\",\n  \"descripcion\": \"Revisión general del motor y lubricación de correas\",\n  \"fecha_mantenimiento\": \"2026-05-10\"\n}" }
+          }
+        },
+        {
+          "name": "Eliminar mantenimiento",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/mantenimiento/{{cedula_operador}}/1001", "host": ["{{base_url}}"], "path": ["api","mantenimiento","{{cedula_operador}}","1001"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "📦 Equipamiento",
+      "item": [
+        {
+          "name": "Listar todo",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/equipamiento", "host": ["{{base_url}}"], "path": ["api","equipamiento"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_equipamiento\": 1,\n    \"nombre\": \"Mancuernas 10kg\",\n    \"descripcion\": \"Par de mancuernas de hierro\",\n    \"cantidad\": 10,\n    \"stock_disponible\": 8\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/equipamiento/1", "host": ["{{base_url}}"], "path": ["api","equipamiento","1"] } }
+        },
+        {
+          "name": "Buscar por nombre",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/equipamiento/nombre/Mancuernas", "host": ["{{base_url}}"], "path": ["api","equipamiento","nombre","Mancuernas"] } }
+        },
+        {
+          "name": "Listar con stock disponible",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/equipamiento/con-stock", "host": ["{{base_url}}"], "path": ["api","equipamiento","con-stock"] } }
+        },
+        {
+          "name": "Registrar equipamiento",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/equipamiento", "host": ["{{base_url}}"], "path": ["api","equipamiento"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Mancuernas 10kg\",\n  \"descripcion\": \"Par de mancuernas de hierro recubierto\",\n  \"cantidad\": 10,\n  \"stock_disponible\": 10\n}" }
+          }
+        },
+        {
+          "name": "Actualizar equipamiento",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/equipamiento/1", "host": ["{{base_url}}"], "path": ["api","equipamiento","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Mancuernas 10kg\",\n  \"descripcion\": \"Par de mancuernas de hierro recubierto\",\n  \"cantidad\": 10,\n  \"stock_disponible\": 7\n}" }
+          }
+        },
+        {
+          "name": "Eliminar equipamiento",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/equipamiento/1", "host": ["{{base_url}}"], "path": ["api","equipamiento","1"] } }
+        }
+      ]
+    },
+
+    {
+      "name": "🎬 Contenidos",
+      "item": [
+        {
+          "name": "Listar todos",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/contenidos", "host": ["{{base_url}}"], "path": ["api","contenidos"] } },
+          "response": [{ "name": "200 OK", "code": 200, "body": "[\n  {\n    \"id_contenido\": 1,\n    \"titulo\": \"Rutina Full Body Avanzada\",\n    \"descripcion\": \"Rutina enfocada en hipertrofia muscular\",\n    \"tipo_contenido\": \"rutina\",\n    \"duracion\": 60,\n    \"url_del_recurso\": \"https://ubdeporte.com/rutina1\",\n    \"fecha_publicacion\": \"2026-05-01\",\n    \"autor\": \"Jorge Ramirez\",\n    \"deporte\": { \"id_deporte\": 1, \"nombre\": \"Crossfit\" }\n  }\n]" }]
+        },
+        {
+          "name": "Buscar por ID",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/contenidos/1", "host": ["{{base_url}}"], "path": ["api","contenidos","1"] } }
+        },
+        {
+          "name": "Contenidos por deporte",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/contenidos/deporte/1", "host": ["{{base_url}}"], "path": ["api","contenidos","deporte","1"] } }
+        },
+        {
+          "name": "Filtrar por tipo",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/contenidos/tipo/rutina", "host": ["{{base_url}}"], "path": ["api","contenidos","tipo","rutina"],
+              "variable": [{ "key": "tipo", "value": "rutina", "description": "video | articulo | rutina | guia | tutorial | podcast | infografia" }]
+            }
+          }
+        },
+        {
+          "name": "Crear contenido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/contenidos", "host": ["{{base_url}}"], "path": ["api","contenidos"] },
+            "body": { "mode": "raw", "raw": "{\n  \"titulo\": \"Rutina Full Body Avanzada\",\n  \"descripcion\": \"Rutina enfocada en hipertrofia muscular para nivel avanzado\",\n  \"tipo_contenido\": \"rutina\",\n  \"duracion\": 60,\n  \"url_del_recurso\": \"https://ubdeporte.com/rutinas/fullbody-avanzada\",\n  \"fecha_publicacion\": \"2026-05-01\",\n  \"autor\": \"Jorge Ramirez\",\n  \"id_deporte\": 1\n}" }
+          }
+        },
+        {
+          "name": "Actualizar contenido",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/contenidos/1", "host": ["{{base_url}}"], "path": ["api","contenidos","1"] },
+            "body": { "mode": "raw", "raw": "{\n  \"titulo\": \"Rutina Full Body Avanzada — Actualizada\",\n  \"descripcion\": \"Rutina revisada con nuevos ejercicios compuestos\",\n  \"tipo_contenido\": \"rutina\",\n  \"duracion\": 75,\n  \"url_del_recurso\": \"https://ubdeporte.com/rutinas/fullbody-avanzada-v2\",\n  \"fecha_publicacion\": \"2026-05-15\",\n  \"autor\": \"Jorge Ramirez\",\n  \"id_deporte\": 1\n}" }
+          }
+        },
+        {
+          "name": "Eliminar contenido",
+          "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/contenidos/1", "host": ["{{base_url}}"], "path": ["api","contenidos","1"] } }
+        }
+      ]
+    }
+
+  ]
+}

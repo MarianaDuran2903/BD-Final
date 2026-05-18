@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface MantenimientoRepository extends JpaRepository<Mantenimiento, MantenimientoId> {
 
-    @Query(value = "SELECT * FROM Mantenimiento", nativeQuery = true)
+    @Query(value = "SELECT * FROM mantenimiento", nativeQuery = true)
     List<Mantenimiento> findAll();
 
     @Query("SELECT m FROM Mantenimiento m WHERE m.id = :id")
@@ -22,19 +22,19 @@ public interface MantenimientoRepository extends JpaRepository<Mantenimiento, Ma
     @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Mantenimiento m WHERE m.id = :id")
     boolean existsById(@Param("id") MantenimientoId id);
 
-    @Query(value = "SELECT * FROM Mantenimiento WHERE OPERADOR_cedula = :cedula", nativeQuery = true)
+    @Query(value = "SELECT * FROM mantenimiento WHERE OPERADOR_cedula = :cedula", nativeQuery = true)
     List<Mantenimiento> findByOperador_Cedula(@Param("cedula") String cedula);
 
-    @Query(value = "SELECT * FROM Mantenimiento WHERE MAQUINAS_codigo_serie = :codigoSerie", nativeQuery = true)
+    @Query(value = "SELECT * FROM mantenimiento WHERE MAQUINAS_codigo_serie = :codigoSerie", nativeQuery = true)
     List<Mantenimiento> findByMaquina_CodigoSerie(@Param("codigoSerie") Integer codigoSerie);
 
-    @Query(value = "SELECT * FROM Mantenimiento WHERE fecha_mantenimiento BETWEEN :inicio AND :fin", nativeQuery = true)
+    @Query(value = "SELECT * FROM mantenimiento WHERE fecha_mantenimiento BETWEEN :inicio AND :fin", nativeQuery = true)
     List<Mantenimiento> findByFechaMantenimientoBetween(@Param("inicio") LocalDate inicio, @Param("fin") LocalDate fin);
 
-    @Query(value = "SELECT * FROM Mantenimiento WHERE tipo_mant = :tipo", nativeQuery = true)
+    @Query(value = "SELECT * FROM mantenimiento WHERE tipo_mant = :tipo", nativeQuery = true)
     List<Mantenimiento> findByTipoMant(@Param("tipo") TipoMantenimiento tipo);
 
     @Modifying
-    @Query(value = "DELETE FROM Mantenimiento WHERE OPERADOR_cedula = :cedula", nativeQuery = true)
+    @Query(value = "DELETE FROM mantenimiento WHERE OPERADOR_cedula = :cedula", nativeQuery = true)
     void deleteByOperadorCedula(@Param("cedula") String cedula);
 }

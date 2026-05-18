@@ -12,27 +12,27 @@ import java.util.Optional;
 
 public interface EntrenadorRepository extends JpaRepository<Entrenador, String> {
 
-    @Query(value = "SELECT * FROM ENTRENADOR", nativeQuery = true)
+    @Query(value = "SELECT * FROM entrenador", nativeQuery = true)
     List<Entrenador> findAll();
 
-    @Query(value = "SELECT * FROM ENTRENADOR WHERE cedula = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM entrenador WHERE cedula = :id", nativeQuery = true)
     Optional<Entrenador> findById(@Param("id") String id);
 
     @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM Entrenador e WHERE e.cedula = :id")
     boolean existsById(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM ENTRENADOR WHERE tipo_entrenamiento = :tipo", nativeQuery = true)
+    @Query(value = "SELECT * FROM entrenador WHERE tipo_entrenamiento = :tipo", nativeQuery = true)
     List<Entrenador> findByTipoEntrenamiento(@Param("tipo") TipoEntrenamiento tipo);
 
-    @Query(value = "SELECT * FROM ENTRENADOR WHERE nivel_exigencia = :nivel", nativeQuery = true)
+    @Query(value = "SELECT * FROM entrenador WHERE nivel_exigencia = :nivel", nativeQuery = true)
     List<Entrenador> findByNivelExigencia(@Param("nivel") NivelExigencia nivel);
 
-    @Query(value = "SELECT e.* FROM ENTRENADOR e JOIN Especializar esp ON e.cedula = esp.ENTRENADOR_cedula WHERE esp.DEPORTE_id_deporte = :idDeporte", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM entrenador e JOIN especializar esp ON e.cedula = esp.ENTRENADOR_cedula WHERE esp.DEPORTE_id_deporte = :idDeporte", nativeQuery = true)
     List<Entrenador> findByDeportes_IdDeporte(@Param("idDeporte") Integer idDeporte);
 
     boolean existsByCedula(String cedula);
 
     @Modifying
-    @Query(value = "DELETE FROM ENTRENADOR WHERE cedula = :cedula", nativeQuery = true)
+    @Query(value = "DELETE FROM entrenador WHERE cedula = :cedula", nativeQuery = true)
     void deleteByCedula(@Param("cedula") String cedula);
 }

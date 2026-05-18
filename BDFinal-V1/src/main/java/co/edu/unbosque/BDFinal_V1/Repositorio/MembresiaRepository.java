@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface MembresiaRepository extends JpaRepository<Membresia, MembresiaId> {
 
-    @Query(value = "SELECT * FROM MEMBRESIA", nativeQuery = true)
+    @Query(value = "SELECT * FROM membresia", nativeQuery = true)
     List<Membresia> findAll();
 
     @Query("SELECT m FROM Membresia m WHERE m.id = :id")
@@ -23,7 +23,7 @@ public interface MembresiaRepository extends JpaRepository<Membresia, MembresiaI
     @Query("SELECT m FROM Membresia m WHERE m.estado = :estado")
     List<Membresia> findByEstado(@Param("estado") EstadoMembresia estado);
 
-    @Query(value = "SELECT * FROM MEMBRESIA WHERE MIEMBRO_cedula = :cedula", nativeQuery = true)
+    @Query(value = "SELECT * FROM membresia WHERE MIEMBRO_cedula = :cedula", nativeQuery = true)
     List<Membresia> findByMiembro_Cedula(@Param("cedula") String cedula);
 
     @Query("SELECT m FROM Membresia m WHERE m.id.miembroCedula = :cedula AND m.estado = :estado")

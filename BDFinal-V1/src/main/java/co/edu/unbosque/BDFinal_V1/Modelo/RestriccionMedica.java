@@ -5,7 +5,7 @@ import co.edu.unbosque.BDFinal_V1.Modelo.emun.TipoRestriccion;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Restriccion_medica")
+@Table(name = "restriccion_medica")
 public class RestriccionMedica {
 
     @Id

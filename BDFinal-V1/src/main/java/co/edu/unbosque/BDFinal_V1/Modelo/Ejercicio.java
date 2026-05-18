@@ -3,7 +3,7 @@ package co.edu.unbosque.BDFinal_V1.Modelo;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "EJERCICIO")
+@Table(name = "ejercicio")
 public class Ejercicio {
 
     @Id

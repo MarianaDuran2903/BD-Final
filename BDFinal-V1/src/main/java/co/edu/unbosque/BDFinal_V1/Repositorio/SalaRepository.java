@@ -9,15 +9,15 @@ import java.util.Optional;
 
 public interface SalaRepository extends JpaRepository<Sala, Integer> {
 
-    @Query(value = "SELECT * FROM Sala", nativeQuery = true)
+    @Query(value = "SELECT * FROM sala", nativeQuery = true)
     List<Sala> findAll();
 
-    @Query(value = "SELECT * FROM Sala WHERE id_sala = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM sala WHERE id_sala = :id", nativeQuery = true)
     Optional<Sala> findById(@Param("id") Integer id);
 
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM Sala s WHERE s.idSala = :id")
     boolean existsById(@Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM Sala WHERE capacidad >= :capacidad", nativeQuery = true)
+    @Query(value = "SELECT * FROM sala WHERE capacidad >= :capacidad", nativeQuery = true)
     List<Sala> findByCapacidadGreaterThanEqual(@Param("capacidad") Short capacidad);
 }

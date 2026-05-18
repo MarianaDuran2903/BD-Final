@@ -11,25 +11,25 @@ import java.util.Optional;
 
 public interface PersonaRepository extends JpaRepository<Persona, String> {
 
-    @Query(value = "SELECT * FROM PERSONA", nativeQuery = true)
+    @Query(value = "SELECT * FROM persona", nativeQuery = true)
     List<Persona> findAll();
 
-    @Query(value = "SELECT * FROM PERSONA WHERE cedula = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM persona WHERE cedula = :id", nativeQuery = true)
     Optional<Persona> findById(@Param("id") String id);
 
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Persona p WHERE p.cedula = :id")
     boolean existsById(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM PERSONA WHERE rol = :rol", nativeQuery = true)
+    @Query(value = "SELECT * FROM persona WHERE rol = :rol", nativeQuery = true)
     List<Persona> findByRol(@Param("rol") Rol rol);
 
-    @Query(value = "SELECT * FROM PERSONA WHERE correo = :correo", nativeQuery = true)
+    @Query(value = "SELECT * FROM persona WHERE correo = :correo", nativeQuery = true)
     Optional<Persona> findByCorreo(@Param("correo") String correo);
 
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Persona p WHERE p.correo = :correo")
     boolean existsByCorreo(@Param("correo") String correo);
 
     @Modifying
-    @Query(value = "DELETE FROM PERSONA WHERE cedula = :cedula", nativeQuery = true)
+    @Query(value = "DELETE FROM persona WHERE cedula = :cedula", nativeQuery = true)
     void deleteByCedula(@Param("cedula") String cedula);
 }

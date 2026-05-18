@@ -12,21 +12,21 @@ import java.util.Optional;
 
 public interface OperadorRepository extends JpaRepository<Operador, String> {
 
-    @Query(value = "SELECT * FROM OPERADOR", nativeQuery = true)
+    @Query(value = "SELECT * FROM operador", nativeQuery = true)
     List<Operador> findAll();
 
-    @Query(value = "SELECT * FROM OPERADOR WHERE cedula = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM operador WHERE cedula = :id", nativeQuery = true)
     Optional<Operador> findById(@Param("id") String id);
 
     @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Operador o WHERE o.cedula = :id")
     boolean existsById(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM OPERADOR WHERE tipo_operador = :tipo", nativeQuery = true)
+    @Query(value = "SELECT * FROM operador WHERE tipo_operador = :tipo", nativeQuery = true)
     List<Operador> findByTipoOperador(@Param("tipo") TipoOperador tipo);
 
-    @Query(value = "SELECT * FROM OPERADOR WHERE especialidad = :especialidad", nativeQuery = true)
+    @Query(value = "SELECT * FROM operador WHERE especialidad = :especialidad", nativeQuery = true)
     List<Operador> findByEspecialidad(@Param("especialidad") EspecialidadOperador especialidad);
 
-    @Query(value = "SELECT * FROM OPERADOR WHERE nivel_tecnico = :nivel", nativeQuery = true)
+    @Query(value = "SELECT * FROM operador WHERE nivel_tecnico = :nivel", nativeQuery = true)
     List<Operador> findByNivelTecnico(@Param("nivel") NivelTecnico nivel);
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ENTRENADOR")
+@Table(name = "entrenador")
 public class Entrenador {
 
     @Id
@@ -36,7 +36,7 @@ public class Entrenador {
 
     @ManyToMany
     @JoinTable(
-        name = "Especializar",
+        name = "especializar",
         joinColumns = @JoinColumn(name = "ENTRENADOR_cedula"),
         inverseJoinColumns = @JoinColumn(name = "DEPORTE_id_deporte")
     )

@@ -11,24 +11,24 @@ import java.util.Optional;
 
 public interface ContenidoRepository extends JpaRepository<Contenido, Integer> {
 
-    @Query(value = "SELECT * FROM CONTENIDO", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido", nativeQuery = true)
     List<Contenido> findAll();
 
-    @Query(value = "SELECT * FROM CONTENIDO WHERE id_contenido = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido WHERE id_contenido = :id", nativeQuery = true)
     Optional<Contenido> findById(@Param("id") Integer id);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Contenido c WHERE c.idContenido = :id")
     boolean existsById(@Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM CONTENIDO WHERE DEPORTE_id_deporte = :idDeporte", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido WHERE DEPORTE_id_deporte = :idDeporte", nativeQuery = true)
     List<Contenido> findByDeporte_IdDeporte(@Param("idDeporte") Integer idDeporte);
 
-    @Query(value = "SELECT * FROM CONTENIDO WHERE tipo_contenido = :tipo", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido WHERE tipo_contenido = :tipo", nativeQuery = true)
     List<Contenido> findByTipoContenido(@Param("tipo") TipoContenido tipo);
 
-    @Query(value = "SELECT * FROM CONTENIDO WHERE autor = :autor", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido WHERE autor = :autor", nativeQuery = true)
     List<Contenido> findByAutor(@Param("autor") String autor);
 
-    @Query(value = "SELECT * FROM CONTENIDO WHERE fecha_publicacion BETWEEN :inicio AND :fin", nativeQuery = true)
+    @Query(value = "SELECT * FROM contenido WHERE fecha_publicacion BETWEEN :inicio AND :fin", nativeQuery = true)
     List<Contenido> findByFechaPublicacionBetween(@Param("inicio") LocalDate inicio, @Param("fin") LocalDate fin);
 }

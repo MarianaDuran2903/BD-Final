@@ -3,7 +3,7 @@ package co.edu.unbosque.BDFinal_V1.Modelo;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Usarv3")
+@Table(name = "usarv3")
 public class Usarv3 {
 
     @EmbeddedId

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "MEMBRESIA")
+@Table(name = "membresia")
 public class Membresia {
 
     @EmbeddedId

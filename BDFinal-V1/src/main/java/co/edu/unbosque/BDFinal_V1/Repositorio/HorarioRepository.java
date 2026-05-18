@@ -9,15 +9,15 @@ import java.util.Optional;
 
 public interface HorarioRepository extends JpaRepository<Horario, Integer> {
 
-    @Query(value = "SELECT * FROM Horario", nativeQuery = true)
+    @Query(value = "SELECT * FROM horario", nativeQuery = true)
     List<Horario> findAll();
 
-    @Query(value = "SELECT * FROM Horario WHERE id_horario = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM horario WHERE id_horario = :id", nativeQuery = true)
     Optional<Horario> findById(@Param("id") Integer id);
 
     @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM Horario h WHERE h.idHorario = :id")
     boolean existsById(@Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM Horario WHERE dia_semana = :dia", nativeQuery = true)
+    @Query(value = "SELECT * FROM horario WHERE dia_semana = :dia", nativeQuery = true)
     List<Horario> findByDiaSemana(@Param("dia") String dia);
 }
