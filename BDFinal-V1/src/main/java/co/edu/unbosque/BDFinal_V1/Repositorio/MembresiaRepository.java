@@ -20,12 +20,12 @@ public interface MembresiaRepository extends JpaRepository<Membresia, MembresiaI
     @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Membresia m WHERE m.id = :id")
     boolean existsById(@Param("id") MembresiaId id);
 
-    @Query(value = "SELECT * FROM MEMBRESIA WHERE estado = :estado", nativeQuery = true)
+    @Query("SELECT m FROM Membresia m WHERE m.estado = :estado")
     List<Membresia> findByEstado(@Param("estado") EstadoMembresia estado);
 
     @Query(value = "SELECT * FROM MEMBRESIA WHERE MIEMBRO_cedula = :cedula", nativeQuery = true)
     List<Membresia> findByMiembro_Cedula(@Param("cedula") String cedula);
 
-    @Query(value = "SELECT * FROM MEMBRESIA WHERE MIEMBRO_cedula = :cedula AND estado = :estado", nativeQuery = true)
+    @Query("SELECT m FROM Membresia m WHERE m.id.miembroCedula = :cedula AND m.estado = :estado")
     List<Membresia> findByMiembro_CedulaAndEstado(@Param("cedula") String cedula, @Param("estado") EstadoMembresia estado);
 }

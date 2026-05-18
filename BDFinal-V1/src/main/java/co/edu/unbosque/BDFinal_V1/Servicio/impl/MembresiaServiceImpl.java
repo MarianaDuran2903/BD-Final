@@ -56,9 +56,18 @@ public class MembresiaServiceImpl implements MembresiaService {
     @Override
     public MembresiaResponseDTO guardar(MembresiaRequestDTO dto) {
         MembresiaId id = new MembresiaId(dto.getMiembroCedula(), dto.getIdPlan(), dto.getFechaInicio());
-        if (membresiaRepository.existsById(id)) {
-            throw new IllegalStateException("Ya existe una membresía con ese miembro, plan y fecha de inicio");
+
+        Optional<Membresia> existing = membresiaRepository.findById(id);
+        if (existing.isPresent()) {
+            Membresia mem = existing.get();
+            if (mem.getEstado() == EstadoMembresia.activa) {
+                throw new IllegalStateException("Ya existe una membresía activa con ese plan y fecha de inicio");
+            }
+            mem.setEstado(dto.getEstado());
+            mem.setFechaFin(dto.getFechaFin());
+            return toResponseDTO(membresiaRepository.save(mem));
         }
+
         Miembro miembro = miembroRepository.findById(dto.getMiembroCedula())
                 .orElseThrow(() -> new RuntimeException("Miembro no encontrado: " + dto.getMiembroCedula()));
         Plan plan = planRepository.findById(dto.getIdPlan())
